@@ -36,6 +36,6 @@ dependencies {
     runtime('mysql:mysql-connector-java')
 //    runtime('com.googlecode.log4jdbc:log4jdbc:1.2')
     compileOnly('org.projectlombok:lombok')
-//    testCompile('org.springframework.boot:spring-boot-starter-test')
-//    testCompile('org.springframework.security:spring-security-test')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
 }

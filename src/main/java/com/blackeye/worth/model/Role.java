@@ -3,7 +3,7 @@ package com.blackeye.worth.model;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name="role")
 public class Role extends IdEntity{
     public Role() {
     }

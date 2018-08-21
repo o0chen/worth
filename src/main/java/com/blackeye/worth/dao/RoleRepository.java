@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends BaseRepository<Role,Long> {
+public interface RoleRepository extends BaseRepository<Role,String> {
 //@Query(value = "select * from User t where t.name = :name", nativeQuery = true)
 //User findByName(@Param("name") String name);
 }

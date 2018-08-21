@@ -15,7 +15,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //实现AuthorizingRealm接口用户用户认证
-public class MyShiroRealm extends AuthorizingRealm {
+public class ShiroRealm extends AuthorizingRealm {
 
     //用于用户查询
     @Autowired

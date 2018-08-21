@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends BaseRepository<User,Long> {
+public interface UserRepository extends BaseRepository<User,String> {
 @Query(value = "select * from User t where t.name = :name", nativeQuery = true)
 User findByName(@Param("name") String name);
 
-//User findOne(@Param("id") String id);
+User findOne(String id);
 
 }
