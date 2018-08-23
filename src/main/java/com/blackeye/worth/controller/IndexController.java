@@ -1,7 +1,7 @@
 package com.blackeye.worth.controller;
 
 import com.blackeye.worth.enums.MenuTypeEnum;
-import com.blackeye.worth.model.Menu;
+import com.blackeye.worth.model.MenuPermission;
 import com.blackeye.worth.service.IMenuService;
 import com.blackeye.worth.tree.MenuTree;
 import com.blackeye.worth.tree.TreeUtils;
@@ -36,8 +36,8 @@ public class IndexController extends BaseController {
     @GetMapping("/user-menus")
     public Result userMenus() {
         // 获取当前用户所拥有的菜单
-        Set<Menu> menuSet = new LinkedHashSet<>(menuService.findByRoleIdsAndType(null, MenuTypeEnum.MENU));
-        List<MenuTree> menuTrees = TreeUtils.buildMenuTree(new ArrayList<Menu>(menuSet));
+        Set<MenuPermission> menuSet = new LinkedHashSet<>(menuService.findByRoleIdAndType("1", MenuTypeEnum.MENU));
+        List<MenuTree> menuTrees = TreeUtils.buildMenuTree(new ArrayList<MenuPermission>(menuSet));
         return new Result.Builder().data(menuTrees).build();
     }
 }

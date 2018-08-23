@@ -22,8 +22,8 @@ public class User extends IdEntity{
 
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
-    private List<Role> roles;
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    private Role role;
 
     public String getName() {
         return name;
@@ -49,11 +49,11 @@ public class User extends IdEntity{
         this.password = password;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

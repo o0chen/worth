@@ -14,7 +14,6 @@ import java.util.Objects;
 
 /**
  * 基本entity，项目中所有entity都继承它
- * Created by ganguixiang on 2017/9/27.
  */
 @MappedSuperclass
 public abstract class IdEntity {

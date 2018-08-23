@@ -9,10 +9,16 @@ public class Role extends IdEntity{
     }
 
     private String roleName;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "role")
-    private List<Permission> permissions;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "menu_permission")
+    @JoinTable(
+            name = "role_menu_permission",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_permission_id", referencedColumnName = "id")
+    )
+    private List<MenuPermission> menuPermissions;
 
 
     public String getRoleName() {
@@ -31,11 +37,11 @@ public class Role extends IdEntity{
         this.user = user;
     }
 
-    public List<Permission> getPermissions() {
-        return permissions;
+    public List<MenuPermission> getMenuPermissions() {
+        return menuPermissions;
     }
 
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
+    public void setMenuPermissions(List<MenuPermission> menuPermissions) {
+        this.menuPermissions = menuPermissions;
     }
 }

@@ -1,17 +1,20 @@
 package com.blackeye.worth.model;
 
 import com.blackeye.worth.enums.MenuTypeEnum;
+import com.blackeye.worth.enums.UserStatusEnum;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
-/**
- * 菜单实体
- */
-@Entity(name="menu")
-public class Menu extends TreeEntity {
+@Entity
+public class MenuPermission extends IdEntity{
+    public MenuPermission() {
+    }
 
     /**
      * 菜单名称
@@ -41,59 +44,49 @@ public class Menu extends TreeEntity {
     @Max(value = 10, message = "顺序在1-10之间")
     private Integer menuOrder;
 
+    /**
+     * 权限编码，权限说明常用：create，update，delete，view
+     *
+     * * button例子：role:create，role:update，role:delete，role:view
+     */
+    private String permission;
 
+    /**
+     * 用户状态
+     * 使用枚举类型，数据库中只保存枚举对应的String
+     */
+    @Enumerated(EnumType.STRING)
+    private MenuTypeEnum type;
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    private Role role;
     /**
      * 角色-菜单关系
      * 多对多
      * 双向关联
-     */
+     *//*
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_menu",
             joinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles;*/
 
-    public String getName() {
-        return name;
+    public String getPermission() {
+        return permission;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
-    public String getIcon() {
-        return icon;
+    public MenuTypeEnum getType() {
+        return type;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setType(MenuTypeEnum type) {
+        this.type = type;
     }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getMenuOrder() {
-        return menuOrder;
-    }
-
-    public void setMenuOrder(Integer menuOrder) {
-        this.menuOrder = menuOrder;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
 
 }

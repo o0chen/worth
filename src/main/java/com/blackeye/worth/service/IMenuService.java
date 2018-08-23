@@ -1,10 +1,10 @@
 package com.blackeye.worth.service;
 
 import com.blackeye.worth.enums.MenuTypeEnum;
-import com.blackeye.worth.model.Menu;
+import com.blackeye.worth.model.MenuPermission;
 
 import java.util.List;
 
 public interface IMenuService {
-    List<Menu> findByRoleIdsAndType(List<String> roleIds, MenuTypeEnum type);
+    List<MenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type);
 }

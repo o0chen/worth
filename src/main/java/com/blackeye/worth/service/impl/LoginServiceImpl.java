@@ -2,7 +2,7 @@ package com.blackeye.worth.service.impl;
 
 import com.blackeye.worth.dao.RoleRepository;
 import com.blackeye.worth.dao.UserRepository;
-import com.blackeye.worth.model.Permission;
+import com.blackeye.worth.model.MenuPermission;
 import com.blackeye.worth.model.Role;
 import com.blackeye.worth.model.User;
 import com.blackeye.worth.service.ILoginService;
@@ -41,16 +41,16 @@ public class LoginServiceImpl implements ILoginService {
         Role role = new Role();
         role.setRoleName(map.get("roleName").toString());
         role.setUser(user);
-        Permission permission1 = new Permission();
-        permission1.setPermission("create");
-        permission1.setRole(role);
-        Permission permission2 = new Permission();
-        permission2.setPermission("update");
-        permission2.setRole(role);
-        List<Permission> permissions = new ArrayList<Permission>();
-        permissions.add(permission1);
-        permissions.add(permission2);
-        role.setPermissions(permissions);
+        MenuPermission menuPermission1 = new MenuPermission();
+        menuPermission1.setPermission("create");
+//        menuPermission1.setRole(role);
+        MenuPermission menuPermission2 = new MenuPermission();
+        menuPermission2.setPermission("update");
+//        menuPermission2.setRole(role);
+        List<MenuPermission> menuPermissions = new ArrayList<MenuPermission>();
+        menuPermissions.add(menuPermission1);
+        menuPermissions.add(menuPermission2);
+        role.setMenuPermissions(menuPermissions);
         roleRepository.save(role);
         return role;
     }

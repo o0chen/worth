@@ -1,6 +1,6 @@
 package com.blackeye.worth.shiro;
 
-import com.blackeye.worth.model.Permission;
+import com.blackeye.worth.model.MenuPermission;
 import com.blackeye.worth.model.Role;
 import com.blackeye.worth.model.User;
 import com.blackeye.worth.service.ILoginService;
@@ -30,14 +30,15 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = loginService.findByName(name);
         //添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        for (Role role:user.getRoles()) {
+//        for (Role role:user.getRole()) {
+            Role role=user.getRole();
             //添加角色
             simpleAuthorizationInfo.addRole(role.getRoleName());
-            for (Permission permission:role.getPermissions()) {
+            for (MenuPermission menuPermission :role.getMenuPermissions()) {
                 //添加权限
-                simpleAuthorizationInfo.addStringPermission(permission.getPermission());
+                simpleAuthorizationInfo.addStringPermission(menuPermission.getPermission());
             }
-        }
+//        }
         return simpleAuthorizationInfo;
     }
 

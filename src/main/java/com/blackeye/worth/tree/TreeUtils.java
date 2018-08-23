@@ -1,6 +1,6 @@
 package com.blackeye.worth.tree;
 
-import com.blackeye.worth.model.Menu;
+import com.blackeye.worth.model.MenuPermission;
 import com.blackeye.worth.utils.StringX;
 import org.springframework.util.CollectionUtils;
 
@@ -53,7 +53,7 @@ public class TreeUtils {
      * @param menus
      * @return
      */
-    public static List<MenuTree> buildMenuTree(List<Menu> menus) {
+    public static List<MenuTree> buildMenuTree(List<MenuPermission> menus) {
         List<MenuTree> menuTrees = new ArrayList<>();
         menus.stream().forEach(menu -> menuTrees.add(new MenuTree(menu)));
         List<MenuTree> mts = TreeUtils.buildTree(menuTrees);
