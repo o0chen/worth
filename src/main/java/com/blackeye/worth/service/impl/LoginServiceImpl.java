@@ -36,7 +36,8 @@ public class LoginServiceImpl implements ILoginService {
     //添加角色
     @Override
     public Role addRole(Map<String, Object> map) {
-        User user = userRepository.findOne(map.get("userId").toString());
+//        User user = userRepository.findOne(map.get("userId").toString());
+        User user = userRepository.findById(map.get("userId").toString()).get();
         Role role = new Role();
         role.setRoleName(map.get("roleName").toString());
         role.setUser(user);

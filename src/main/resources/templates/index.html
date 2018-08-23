@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ZH" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>管理首页</title>
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" th:href="@{/css/lib/element-ui/index.css}" />-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/element-ui/1.4.6/theme-default/index.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+</head>
+
+<body>
+<div id="index">
+    <div class="wrapper">
+        <!-- 头部start -->
+        <div class="header">
+            <div class="logo">
+                后台管理系统
+            </div>
+            <div class="user" shiro:authenticated="true">
+                <span>欢迎您，<span shiro:principal property="nickname"></span></span>
+                <a href="logout">注销</a>
+            </div>
+        </div>
+        <!-- 头部end -->
+        <!-- 左边导航栏start -->
+        <div id="sidebar">
+            <el-menu theme="dark" default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
+                <el-menu-item index="1">
+                    <template slot="title"><i class="el-icon-message"></i>首页</template>
+                </el-menu-item>
+                <!--<el-submenu index="2">-->
+                    <!--<template slot="title"><i class="el-icon-setting"></i>系统管理</template>-->
+                    <!--<el-menu-item index="2-1" @click="addTab('3','用户管理', '/user/')"><i class="el-icon-user"></i>用户管理</el-menu-item>-->
+                    <!--<el-menu-item index="2-2" @click="addTab('4','角色管理', '/role/')"><i class="el-icon-user"></i>角色管理</el-menu-item>-->
+                    <!--&lt;!&ndash;<el-menu-item index="2-3" @click="addTab('5','权限管理', '/permission/')"><i class="el-icon-user"></i>权限管理</el-menu-item>&ndash;&gt;-->
+                    <!--<el-menu-item index="2-4" @click="addTab('6','菜单管理', '/menu/')"><i class="el-icon-user"></i>菜单管理</el-menu-item>-->
+                <!--</el-submenu>-->
+                <el-submenu v-for="menutree in menutrees" :key="menutree.id" :index="menutree.id">
+                    <template slot="title">
+                        <i class="el-icon-setting"></i>{{menutree.name}}
+                    </template>
+                    <!-- 一级菜单 -->
+                    <el-submenu :index="menu.id" :key="menu.id" v-if="menutree.children.length > 0 && menu.children.length > 0" v-for="menu in menutree.children">
+                        <!--<i class="el-icon-setting"></i>{{menu.name}}-->
+                        <template slot="title">
+                            <i class="el-icon-setting"></i>{{menu.name}}
+                        </template>
+                        <!-- 三级菜单 最多只能有三级菜单-->
+                        <el-menu-item :index="m.id" @click="addTab(m.id, m.name, m.url)" :key="m.id" v-for="m in menu.children">
+                            <i class="el-icon-setting"></i>{{m.name}}
+                        </el-menu-item>
+                    </el-submenu>
+                    <!-- 二级菜单 -->
+                    <el-menu-item :index="menu.id"  @click="addTab(menu.id, menu.name, menu.url)" v-if="menutree.children.length > 0 && menu.children.length == 0" :key="menu.id" v-for="menu in menutree.children">
+                        <i class="el-icon-setting"></i>{{menu.name}}
+                    </el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </div>
+        <div id="tabs">
+            <!-- 第一个tab标签页不能被关闭，使用v-bind标签实现 -->
+            <el-tabs v-model="activeTabId" type="card"  v-bind:closable="activeTabId !== '1'" @tab-remove="removeTab">
+                <el-tab-pane
+                        v-for="(item, index) in tabs"
+                        :key="item.id"
+                        :label="item.name"
+                        :name="item.id" >
+                    <div class="content" :id="item.id">
+                        {{item.content}}
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+</div>
+</body>
+<!-- 先引入 Vue -->
+<script th:src="@{js/lib/vue/vue.js}"></script>
+<!-- 引入组件库 -->
+<script th:src="@{js/lib/element-ui/index.js}"></script>
+<script th:src="@{js/lib/jquery/jquery.min.js}"></script>
+<script th:src="@{js/config.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{js/common.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{js/index.js}" type="text/javascript" charset="utf-8"></script>
+</html>

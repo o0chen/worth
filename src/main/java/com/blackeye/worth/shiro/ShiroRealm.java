@@ -53,6 +53,7 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = loginService.findByName(name);
         if (user == null) {
             //这里返回后会报出对应异常
+            System.err.println("找不到用户");
             return null;
         } else {
             //这里验证authenticationToken和simpleAuthenticationInfo的信息

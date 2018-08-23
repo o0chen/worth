@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ZH" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>登录</title>
+        <!-- 引入样式 -->
+        <link rel="stylesheet" href="https://cdn.bootcss.com/element-ui/1.4.6/theme-default/index.css">
+        <link rel="stylesheet" th:href="@{css/login.css}"/>
+
+    </head>
+
+    <body>
+        <div id="login" class="login">
+            <div class="login-form">
+                <h1 class="title">登录</h1>
+                <el-form :model="user" :rules="rules" ref="form">
+                    <el-form-item prop="username">
+                        <el-input type="text" name="username" v-model="user.username" size="small" placeholder="用户名"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input type="password" name="password" v-model="user.password" size="small" placeholder="密码"></el-input>
+                    </el-form-item>
+                    <div class="login-btn-group">
+                        <el-button type="primary" @click="login" size="small">登录</el-button>
+                    </div>
+                </el-form>
+            </div>
+        </div>
+    </body>
+    <!-- 先引入 Vue -->
+    <script src="js/lib/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="js/lib/element-ui/index.js"></script>
+    <script src="js/lib/jquery/jquery.min.js"></script>
+    <script th:src="@{js/config.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{js/common.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{js/login.js}" type="text/javascript" charset="utf-8"></script>
+
+</html>

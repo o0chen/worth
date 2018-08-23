@@ -1,4 +1,4 @@
-package com.blackeye.worth.core.customer;
+package com.blackeye.worth.controller;
 
 
 import com.blackeye.worth.model.Role;
@@ -10,16 +10,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-//测试用
-@RestController
-public class LoginResource {
+@Controller
+public class LoginController {
 
     @Autowired
     private ILoginService loginService;
@@ -34,34 +31,40 @@ public class LoginResource {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(@RequestBody Map map){
         //添加用户认证信息
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
-                map.get("username").toString(),
-                map.get("password").toString());
-        //进行验证，这里可以捕获异常，然后返回对应信息
-        subject.login(usernamePasswordToken);
+//        Subject subject = SecurityUtils.getSubject();
+//        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
+//                map.get("username").toString(),
+//                map.get("password").toString());
+//        //进行验证，这里可以捕获异常，然后返回对应信息
+//        subject.login(usernamePasswordToken);
         return "login";
     }
 
     @RequestMapping(value = "/index")
+    @ResponseBody
     public String index(){
         return "index";
     }
 
     //登出
     @RequestMapping(value = "/logout")
+    @ResponseBody
     public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return "logout";
     }
 
     //错误页面展示
     @RequestMapping(value = "/error",method = RequestMethod.POST)
+    @ResponseBody
     public String error(){
         return "error ok!";
     }
 
     //数据初始化
     @RequestMapping(value = "/addUser")
+    @ResponseBody
     public String addUser(@RequestBody Map<String,Object> map){
         User user = loginService.addUser(map);
         return "addUser is ok! \n" + user;
@@ -69,6 +72,7 @@ public class LoginResource {
 
     //角色初始化
     @RequestMapping(value = "/addRole")
+    @ResponseBody
     public String addRole(@RequestBody Map<String,Object> map){
         Role role = loginService.addRole(map);
         return "addRole is ok! \n" + role;

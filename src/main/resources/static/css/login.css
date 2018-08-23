@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,body {
+    height: 100%;
+}
+.login {
+    height: 100%;
+    background: url("../img/login-background.jpg") no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: rgba(255,255,255,.95);
+}
+.login-form {
+    text-align: center;
+    width: 250px;
+    height: 200px;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.3);
+    box-shadow: 0 3px 0 rgba(12,12,12,.03);
+    border-radius: 3px;
+    padding: 30px;
+    margin: auto;
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+}
+
+.login-form .el-form-item {
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.login-btn-group {
+    text-align: center;
+}
+
+.login-btn-group .el-button {
+    margin-top: 15px;
+    width: 100%;
+}

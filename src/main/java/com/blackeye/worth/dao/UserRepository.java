@@ -12,6 +12,4 @@ public interface UserRepository extends BaseRepository<User,String> {
 @Query(value = "select * from User t where t.name = :name", nativeQuery = true)
 User findByName(@Param("name") String name);
 
-User findOne(String id);
-
 }
