@@ -1,7 +1,6 @@
 package com.blackeye.worth.model;
 
 import com.blackeye.worth.enums.MenuTypeEnum;
-import com.blackeye.worth.enums.UserStatusEnum;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -9,11 +8,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @Entity
-public class MenuPermission extends IdEntity{
-    public MenuPermission() {
+public class SysMenuPermission extends BaseDojo {
+    public SysMenuPermission() {
     }
 
     /**
@@ -32,7 +30,7 @@ public class MenuPermission extends IdEntity{
      * 菜单路径
      * 唯一
      */
-    @Column(unique = true)
+    @Column(length = 255)
     @NotBlank(message = "路径不能为空")
     @Pattern(regexp = "^/.*?", message = "无效的路径地址")
     private String url;
@@ -59,7 +57,7 @@ public class MenuPermission extends IdEntity{
     private MenuTypeEnum type;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    private Role role;
+//    private SysRole role;
     /**
      * 角色-菜单关系
      * 多对多
@@ -71,7 +69,7 @@ public class MenuPermission extends IdEntity{
             joinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<Role> roles;*/
+    private Set<SysRole> roles;*/
 
     public String getPermission() {
         return permission;

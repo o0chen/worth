@@ -19,13 +19,12 @@ package com.blackeye.worth.model;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 /**
  * 数据字典
  */
-@Entity(name = "sys_dict")
-public class SysDictEntity extends IdEntity {
+@Entity
+public class SysDict extends BaseDojo {
 
     /**
      * 字典名称

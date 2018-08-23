@@ -1,14 +1,12 @@
 package com.blackeye.worth.model;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,7 +14,7 @@ import java.util.Objects;
  * 基本entity，项目中所有entity都继承它
  */
 @MappedSuperclass
-public abstract class IdEntity {
+public abstract class BaseDojo {
 
     /**
      * 主键
@@ -60,7 +58,7 @@ public abstract class IdEntity {
      */
     private Integer delFlag=0;
 
-    public IdEntity() {
+    public BaseDojo() {
         createDate = new Date();
         modifyDate = new Date();
     }
@@ -123,7 +121,7 @@ public abstract class IdEntity {
 
     @Override
     public String toString() {
-        return "IdEntity{" +
+        return "BaseDojo{" +
                 "id='" + id + '\'' +
                 ", creator='" + creator + '\'' +
                 ", createDate=" + createDate +
@@ -158,9 +156,9 @@ public abstract class IdEntity {
             return false;
         }
 
-        IdEntity idEntity = (IdEntity) obj;
+        BaseDojo baseDojo = (BaseDojo) obj;
 
-        return getId().equals(idEntity.getId());
+        return getId().equals(baseDojo.getId());
     }
 
 }

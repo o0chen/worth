@@ -122,7 +122,7 @@ public abstract class IdEntity {
 
     @Override
     public String toString() {
-        return "IdEntity{" +
+        return "BaseDojo{" +
                 "id='" + id + '\'' +
                 ", creator='" + creator + '\'' +
                 ", createDate=" + createDate +
@@ -157,9 +157,9 @@ public abstract class IdEntity {
             return false;
         }
 
-        IdEntity idEntity = (IdEntity) obj;
+        BaseDojo baseDojo = (BaseDojo) obj;
 
-        return getId().equals(idEntity.getId());
+        return getId().equals(baseDojo.getId());
     }
 
 }

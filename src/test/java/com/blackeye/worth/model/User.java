@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 @Entity(name="user")
 //@MappedSuperclass
-public class User extends IdEntity{
+public class User extends BaseDojo {
 
     public User() {
     }

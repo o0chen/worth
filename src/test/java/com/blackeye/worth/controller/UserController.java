@@ -1,6 +1,6 @@
 package com.blackeye.worth.controller;
 
-import com.blackeye.worth.model.User;
+import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,9 @@ public class UserController {
     @RequestMapping(value = "/show")
     @ResponseBody
     public String show(@RequestParam(value = "name") String name) {
-        User user = userService.findUserByName(name);
-        if (null != user)
-            return user.getId() + " & " + user.getName() + " & " + user.getPassword();
+        SysUser sysUser = userService.findUserByName(name);
+        if (null != sysUser)
+            return sysUser.getId() + " & " + sysUser.getName() + " & " + sysUser.getPassword();
         else return "null";
     }
 }

@@ -19,7 +19,6 @@ package com.blackeye.worth.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Entity;
-import java.io.Serializable;
 import java.util.Date;
 
 
@@ -27,8 +26,8 @@ import java.util.Date;
  * 系统日志
  * 
  */
-@Entity(name="sys_log")
-public class SysLogEntity extends IdEntity {
+@Entity
+public class SysLog extends BaseDojo {
 	private static final long serialVersionUID = 1L;
 	//用户名
 	private String username;

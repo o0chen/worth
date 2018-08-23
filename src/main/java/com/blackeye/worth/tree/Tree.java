@@ -1,6 +1,6 @@
 package com.blackeye.worth.tree;
 
-import com.blackeye.worth.model.IdEntity;
+import com.blackeye.worth.model.BaseDojo;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class Tree implements Serializable {
 
     private Set<Tree> children = new HashSet<>();
 
-    public Tree(IdEntity treeEntity) {
+    public Tree(BaseDojo treeEntity) {
         this.id = treeEntity.getId();
 //        this.parentId = treeEntity.getParentId();
 //        this.label = treeEntity.getLabel();

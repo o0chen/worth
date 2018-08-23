@@ -1,7 +1,7 @@
 package com.blackeye.worth.tree;
 
 
-import com.blackeye.worth.model.MenuPermission;
+import com.blackeye.worth.model.SysMenuPermission;
 
 /**
  */
@@ -27,7 +27,7 @@ public class MenuTree extends Tree {
      */
 //    private String permission;
 
-    public MenuTree (MenuPermission menu) {
+    public MenuTree (SysMenuPermission menu) {
         super(menu);
 //        this.name = menu.getName();
 //        this.url = menu.getUrl();

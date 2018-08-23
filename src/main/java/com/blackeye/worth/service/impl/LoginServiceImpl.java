@@ -2,9 +2,9 @@ package com.blackeye.worth.service.impl;
 
 import com.blackeye.worth.dao.RoleRepository;
 import com.blackeye.worth.dao.UserRepository;
-import com.blackeye.worth.model.MenuPermission;
-import com.blackeye.worth.model.Role;
-import com.blackeye.worth.model.User;
+import com.blackeye.worth.model.SysMenuPermission;
+import com.blackeye.worth.model.SysRole;
+import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,39 +25,39 @@ public class LoginServiceImpl implements ILoginService {
 
     //添加用户
     @Override
-    public User addUser(Map<String, Object> map) {
-        User user = new User();
-        user.setName(map.get("username").toString());
-        user.setPassword(map.get("password").toString());
-        userRepository.save(user);
-        return user;
+    public SysUser addUser(Map<String, Object> map) {
+        SysUser sysUser = new SysUser();
+        sysUser.setName(map.get("username").toString());
+        sysUser.setPassword(map.get("password").toString());
+        userRepository.save(sysUser);
+        return sysUser;
     }
 
     //添加角色
     @Override
-    public Role addRole(Map<String, Object> map) {
-//        User user = userRepository.findOne(map.get("userId").toString());
-        User user = userRepository.findById(map.get("userId").toString()).get();
-        Role role = new Role();
-        role.setRoleName(map.get("roleName").toString());
-        role.setUser(user);
-        MenuPermission menuPermission1 = new MenuPermission();
-        menuPermission1.setPermission("create");
-//        menuPermission1.setRole(role);
-        MenuPermission menuPermission2 = new MenuPermission();
-        menuPermission2.setPermission("update");
-//        menuPermission2.setRole(role);
-        List<MenuPermission> menuPermissions = new ArrayList<MenuPermission>();
-        menuPermissions.add(menuPermission1);
-        menuPermissions.add(menuPermission2);
-        role.setMenuPermissions(menuPermissions);
-        roleRepository.save(role);
-        return role;
+    public SysRole addRole(Map<String, Object> map) {
+//        SysUser sysUser = userRepository.findOne(map.get("userId").toString());
+        SysUser sysUser = userRepository.findById(map.get("userId").toString()).get();
+        SysRole sysRole = new SysRole();
+        sysRole.setRoleName(map.get("roleName").toString());
+        //sysRole.setSysUser(sysUser);
+        SysMenuPermission sysMenuPermission1 = new SysMenuPermission();
+        sysMenuPermission1.setPermission("create");
+//        sysMenuPermission1.setSysRole(sysRole);
+        SysMenuPermission sysMenuPermission2 = new SysMenuPermission();
+        sysMenuPermission2.setPermission("update");
+//        sysMenuPermission2.setSysRole(sysRole);
+        List<SysMenuPermission> sysMenuPermissions = new ArrayList<SysMenuPermission>();
+        sysMenuPermissions.add(sysMenuPermission1);
+        sysMenuPermissions.add(sysMenuPermission2);
+        sysRole.setSysMenuPermissions(sysMenuPermissions);
+        roleRepository.save(sysRole);
+        return sysRole;
     }
 
     //查询用户通过用户名
     @Override
-    public User findByName(String name) {
+    public SysUser findByName(String name) {
         return userRepository.findByName(name);
     }
 }

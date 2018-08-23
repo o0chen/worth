@@ -19,7 +19,7 @@
             <div class="logo">
                 后台管理系统
             </div>
-            <div class="user" shiro:authenticated="true">
+            <div class="sysUser" shiro:authenticated="true">
                 <span>欢迎您，<span shiro:principal property="nickname"></span></span>
                 <a href="logout">注销</a>
             </div>
@@ -33,10 +33,10 @@
                 </el-menu-item>
                 <!--<el-submenu index="2">-->
                     <!--<template slot="title"><i class="el-icon-setting"></i>系统管理</template>-->
-                    <!--<el-menu-item index="2-1" @click="addTab('3','用户管理', '/user/')"><i class="el-icon-user"></i>用户管理</el-menu-item>-->
-                    <!--<el-menu-item index="2-2" @click="addTab('4','角色管理', '/role/')"><i class="el-icon-user"></i>角色管理</el-menu-item>-->
-                    <!--&lt;!&ndash;<el-menu-item index="2-3" @click="addTab('5','权限管理', '/permission/')"><i class="el-icon-user"></i>权限管理</el-menu-item>&ndash;&gt;-->
-                    <!--<el-menu-item index="2-4" @click="addTab('6','菜单管理', '/menu/')"><i class="el-icon-user"></i>菜单管理</el-menu-item>-->
+                    <!--<el-menu-item index="2-1" @click="addTab('3','用户管理', '/sysUser/')"><i class="el-icon-sysUser"></i>用户管理</el-menu-item>-->
+                    <!--<el-menu-item index="2-2" @click="addTab('4','角色管理', '/role/')"><i class="el-icon-sysUser"></i>角色管理</el-menu-item>-->
+                    <!--&lt;!&ndash;<el-menu-item index="2-3" @click="addTab('5','权限管理', '/permission/')"><i class="el-icon-sysUser"></i>权限管理</el-menu-item>&ndash;&gt;-->
+                    <!--<el-menu-item index="2-4" @click="addTab('6','菜单管理', '/menu/')"><i class="el-icon-sysUser"></i>菜单管理</el-menu-item>-->
                 <!--</el-submenu>-->
                 <el-submenu v-for="menutree in menutrees" :key="menutree.id" :index="menutree.id">
                     <template slot="title">

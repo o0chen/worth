@@ -1,14 +1,11 @@
 package com.blackeye.worth.dao;
 
 import com.blackeye.worth.core.customer.BaseRepository;
-import com.blackeye.worth.model.Role;
-import com.blackeye.worth.model.User;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.blackeye.worth.model.SysRole;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends BaseRepository<Role,String> {
-//@Query(value = "select * from User t where t.name = :name", nativeQuery = true)
-//User findByName(@Param("name") String name);
+public interface RoleRepository extends BaseRepository<SysRole,String> {
+//@Query(value = "select * from SysUser t where t.name = :name", nativeQuery = true)
+//SysUser findByName(@Param("name") String name);
 }

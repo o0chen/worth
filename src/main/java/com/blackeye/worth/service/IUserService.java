@@ -1,7 +1,7 @@
 package com.blackeye.worth.service;
 
-import com.blackeye.worth.model.User;
+import com.blackeye.worth.model.SysUser;
 
 public interface IUserService {
-    public User findUserByName(String name);
+    public SysUser findUserByName(String name);
 }

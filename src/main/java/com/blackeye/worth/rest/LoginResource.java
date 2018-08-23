@@ -1,8 +1,8 @@
 //package com.blackeye.worth.rest;
 //
 //
-//import com.blackeye.worth.model.Role;
-//import com.blackeye.worth.model.User;
+//import com.blackeye.worth.model.SysRole;
+//import com.blackeye.worth.model.SysUser;
 //import com.blackeye.worth.service.ILoginService;
 //import org.apache.shiro.SecurityUtils;
 //import org.apache.shiro.authc.UsernamePasswordToken;
@@ -65,14 +65,14 @@
 //    //数据初始化
 //    @RequestMapping(value = "/addUser")
 //    public String addUser(@RequestBody Map<String,Object> map){
-//        User user = loginService.addUser(map);
+//        SysUser user = loginService.addUser(map);
 //        return "addUser is ok! \n" + user;
 //    }
 //
 //    //角色初始化
 //    @RequestMapping(value = "/addRole")
 //    public String addRole(@RequestBody Map<String,Object> map){
-//        Role role = loginService.addRole(map);
+//        SysRole role = loginService.addRole(map);
 //        return "addRole is ok! \n" + role;
 //    }
 //

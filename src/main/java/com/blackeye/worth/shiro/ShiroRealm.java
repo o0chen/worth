@@ -1,8 +1,8 @@
 package com.blackeye.worth.shiro;
 
-import com.blackeye.worth.model.MenuPermission;
-import com.blackeye.worth.model.Role;
-import com.blackeye.worth.model.User;
+import com.blackeye.worth.model.SysMenuPermission;
+import com.blackeye.worth.model.SysRole;
+import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.ILoginService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -27,16 +27,16 @@ public class ShiroRealm extends AuthorizingRealm {
         //获取登录用户名
         String name= (String) principalCollection.getPrimaryPrincipal();
         //查询用户名称
-        User user = loginService.findByName(name);
+        SysUser sysUser = loginService.findByName(name);
         //添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-//        for (Role role:user.getRole()) {
-            Role role=user.getRole();
+//        for (SysRole sysRole:sysUser.getSysRole()) {
+            SysRole sysRole = sysUser.getSysRole();
             //添加角色
-            simpleAuthorizationInfo.addRole(role.getRoleName());
-            for (MenuPermission menuPermission :role.getMenuPermissions()) {
+            simpleAuthorizationInfo.addRole(sysRole.getRoleName());
+            for (SysMenuPermission sysMenuPermission : sysRole.getSysMenuPermissions()) {
                 //添加权限
-                simpleAuthorizationInfo.addStringPermission(menuPermission.getPermission());
+                simpleAuthorizationInfo.addStringPermission(sysMenuPermission.getPermission());
             }
 //        }
         return simpleAuthorizationInfo;
@@ -51,14 +51,14 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         //获取用户信息
         String name = authenticationToken.getPrincipal().toString();
-        User user = loginService.findByName(name);
-        if (user == null) {
+        SysUser sysUser = loginService.findByName(name);
+        if (sysUser == null) {
             //这里返回后会报出对应异常
             System.err.println("找不到用户");
             return null;
         } else {
             //这里验证authenticationToken和simpleAuthenticationInfo的信息
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, user.getPassword().toString(), getName());
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, sysUser.getPassword().toString(), getName());
             return simpleAuthenticationInfo;
         }
     }

@@ -3,12 +3,11 @@ package com.blackeye.worth.model;
 import com.blackeye.worth.enums.UserStatusEnum;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity(name="user")
-public class User extends IdEntity{
+@Entity
+public class SysUser extends BaseDojo {
 
-    public User() {
+    public SysUser() {
     }
 
     private String name;
@@ -22,8 +21,8 @@ public class User extends IdEntity{
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
-    private Role role;
+    @OneToOne(cascade = CascadeType.ALL)
+    private SysRole sysRole;
 
     public String getName() {
         return name;
@@ -49,11 +48,11 @@ public class User extends IdEntity{
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public SysRole getSysRole() {
+        return sysRole;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setSysRole(SysRole sysRole) {
+        this.sysRole = sysRole;
     }
 }

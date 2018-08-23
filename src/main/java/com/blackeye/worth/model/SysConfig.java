@@ -22,8 +22,8 @@ import javax.validation.constraints.NotBlank;
 /**
  * 系统配置信息
  */
-@Entity(name = "sys_config")
-public class SysConfigEntity extends IdEntity {
+@Entity
+public class SysConfig extends BaseDojo {
     @NotBlank(message = "参数名不能为空")
     private String paramKey;
     @NotBlank(message = "参数值不能为空")
