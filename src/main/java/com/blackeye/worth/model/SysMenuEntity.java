@@ -17,10 +17,8 @@
 package com.blackeye.worth.model;
 
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,14 +29,13 @@ import java.util.List;
  * @email sunlightcs@gmail.com
  * @date 2016年9月18日 上午9:26:39
  */
-@TableName("sys_menu")
+@Entity(name="sys_menu")
 public class SysMenuEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 菜单ID
 	 */
-	@TableId
 	private Long menuId;
 
 	/**
@@ -49,7 +46,6 @@ public class SysMenuEntity implements Serializable {
 	/**
 	 * 父菜单名称
 	 */
-	@TableField(exist=false)
 	private String parentName;
 
 	/**
@@ -85,10 +81,8 @@ public class SysMenuEntity implements Serializable {
 	/**
 	 * ztree属性
 	 */
-	@TableField(exist=false)
 	private Boolean open;
 
-	@TableField(exist=false)
 	private List<?> list;
 
 	public void setMenuId(Long menuId) {

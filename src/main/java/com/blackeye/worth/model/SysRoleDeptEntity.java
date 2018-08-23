@@ -17,9 +17,7 @@
 package com.blackeye.worth.model;
 
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -29,11 +27,10 @@ import java.io.Serializable;
  * @email sunlightcs@gmail.com
  * @date 2017年6月21日 23:28:13
  */
-@TableName("sys_role_dept")
+@Entity(name="sys_role_dept")
 public class SysRoleDeptEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@TableId
-	private Long id;
+
 
 	/**
 	 * 角色ID
@@ -45,22 +42,8 @@ public class SysRoleDeptEntity implements Serializable {
 	 */
 	private Long deptId;
 
-	/**
-	 * 设置：
-	 * @param id 
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	/**
-	 * 获取：
-	 * @return Long
-	 */
-	public Long getId() {
-		return id;
-	}
-	
+
 	/**
 	 * 设置：角色ID
 	 * @param roleId 角色ID

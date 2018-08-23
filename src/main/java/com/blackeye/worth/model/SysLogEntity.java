@@ -16,10 +16,9 @@
 
 package com.blackeye.worth.model;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,11 +29,9 @@ import java.util.Date;
  * @email sunlightcs@gmail.com
  * @date 2017-03-08 10:40:56
  */
-@TableName("sys_log")
+@Entity(name="sys_log")
 public class SysLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@TableId
-	private Long id;
 	//用户名
 	private String username;
 	//用户操作
@@ -51,18 +48,7 @@ public class SysLogEntity implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createDate;
 
-	/**
-	 * 设置：
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-	/**
-	 * 获取：
-	 */
-	public Long getId() {
-		return id;
-	}
+
 	/**
 	 * 设置：用户名
 	 */

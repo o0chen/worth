@@ -17,9 +17,8 @@
 package com.blackeye.worth.model;
 
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -29,10 +28,10 @@ import java.io.Serializable;
  * @email sunlightcs@gmail.com
  * @date 2016年9月18日 上午9:28:13
  */
-@TableName("sys_role_menu")
+@Entity(name="sys_role_menu")
 public class SysRoleMenuEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@TableId
+
 	private Long id;
 
 	/**

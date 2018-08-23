@@ -56,10 +56,10 @@ public abstract class IdEntity {
 
     /**
      * 逻辑删除标志
-     * false 未删除
-     * true 删除
+     * 0 未删除
+     * 1 删除
      */
-    private Boolean delflag = Boolean.FALSE;
+    private Integer delFlag=0;
 
     public IdEntity() {
         createDate = new Date();
@@ -114,12 +114,12 @@ public abstract class IdEntity {
         this.description = description;
     }
 
-    public Boolean isDelflag() {
-        return delflag;
+    public Integer getDelFlag() {
+        return delFlag;
     }
 
-    public void setDelflag(Boolean delflag) {
-        this.delflag = delflag;
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
     }
 
     @Override
@@ -131,7 +131,7 @@ public abstract class IdEntity {
                 ", modifier='" + modifier + '\'' +
                 ", modifyDate=" + modifyDate +
                 ", description='" + description + '\'' +
-                ", delflag=" + delflag +
+                ", delflag=" + delFlag +
                 '}';
     }
 

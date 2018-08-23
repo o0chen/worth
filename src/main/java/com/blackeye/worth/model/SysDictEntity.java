@@ -16,9 +16,6 @@
 
 package com.blackeye.worth.model;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableLogic;
-import com.baomidou.mybatisplus.annotations.TableName;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
@@ -147,17 +144,5 @@ public class SysDictEntity extends IdEntity {
         return remark;
     }
 
-    /**
-     * 设置：删除标记  -1：已删除  0：正常
-     */
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
 
-    /**
-     * 获取：删除标记  -1：已删除  0：正常
-     */
-    public Integer getDelFlag() {
-        return delFlag;
-    }
 }

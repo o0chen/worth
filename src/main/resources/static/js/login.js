@@ -64,8 +64,6 @@ var login = new Vue({
                         });
                     }
                 },
-
-
                 error: function(e) {
                     _this.$message({
                         type: 'error',
