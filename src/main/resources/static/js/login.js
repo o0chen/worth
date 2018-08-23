@@ -44,9 +44,9 @@ var login = new Vue({
             }
             $.ajax({
                 url: url,
-                data: data,
+                data: JSON.stringify(data),
                 type: 'POST',
-                contentType:'application/x-www-form-urlencoded',
+                contentType:'application/json; charset=utf-8',
                 async: false,
                 success: function(data) {
                     log('data = ' + data);

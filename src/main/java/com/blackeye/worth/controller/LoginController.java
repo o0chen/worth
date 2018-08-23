@@ -31,7 +31,7 @@ public class LoginController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(@RequestBody Map map){
         //添加用户认证信息
-//        Subject subject = SecurityUtils.getSubject();
+//        Subject subject = SecurityUtils.getlSubject();
 //        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
 //                map.get("username").toString(),
 //                map.get("password").toString());
