@@ -31,12 +31,12 @@ public class LoginController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(@RequestBody Map map){
         //添加用户认证信息
-//        Subject subject = SecurityUtils.getSubject();
-//        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
-//                map.get("username").toString(),
-//                map.get("password").toString());
-//        //进行验证，这里可以捕获异常，然后返回对应信息
-//        subject.login(usernamePasswordToken);
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
+                map.get("username").toString(),
+                map.get("password").toString());
+        //进行验证，这里可以捕获异常，然后返回对应信息
+        subject.login(usernamePasswordToken);
         return "login";
     }
 

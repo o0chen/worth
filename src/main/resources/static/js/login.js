@@ -46,8 +46,9 @@ var login = new Vue({
                 url: url,
                 data: data,
                 type: 'POST',
-                contentType:'application/x-www-form-urlencoded',
+                // contentType:"application/json",
                 async: false,
+                processData:false,
                 success: function(data) {
                     log('data = ' + data);
                     if (data.code == 0) {
