@@ -1,7 +1,7 @@
 package com.blackeye.worth.core.customer;
- 
+
 import java.io.Serializable;
- 
+
 import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
@@ -13,7 +13,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 		implements BaseRepository<T, ID> {
 
 	private EntityManager entityManager;
- 
+
 	public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
 		super(domainClass, em);
 		this.entityManager = em;

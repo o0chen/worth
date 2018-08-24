@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <title>管理首页</title>
     <!-- 引入样式 -->
-    <!--<link rel="stylesheet" th:href="@{/css/lib/element-ui/index.css}" />-->
+    <link rel="stylesheet" th:href="@{/css/lib/element-ui/index.css}" />
     <link rel="stylesheet" href="https://cdn.bootcss.com/element-ui/1.4.6/theme-default/index.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
 </head>
@@ -27,7 +27,7 @@
         <!-- 头部end -->
         <!-- 左边导航栏start -->
         <div id="sidebar">
-            <el-menu theme="dark" default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
+            <el-menu theme="dark" default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" >
                 <el-menu-item index="1">
                     <template slot="title"><i class="el-icon-message"></i>首页</template>
                 </el-menu-item>

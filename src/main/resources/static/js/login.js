@@ -2,7 +2,7 @@ var login = new Vue({
     el: '#login',
     data: {
         rules: {
-            username: [
+            name: [
                 {
                     required: true,
                     message: '请输入用户名',
@@ -23,7 +23,7 @@ var login = new Vue({
                 }
             ]
         },
-        user: {}
+        sysUser: {}
     },
     methods: {
         login: function() {
@@ -39,14 +39,14 @@ var login = new Vue({
             var _this = this;
             var url = contentPath + loginPath;
             var data = {
-                username: _this.user.username,
-                password: _this.user.password
+                username: _this.sysUser.name,
+                password: _this.sysUser.password
             }
             $.ajax({
                 url: url,
-                data: JSON.stringify(data),
+                data: data,
                 type: 'POST',
-                contentType:'application/json; charset=utf-8',
+                contentType:'application/x-www-form-urlencoded;charset=utf-8',
                 async: false,
                 success: function(data) {
                     log('data = ' + data);

@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class LoginController {
@@ -29,21 +32,24 @@ public class LoginController {
 
     //post登录
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(@RequestBody Map map){
-        //添加用户认证信息
+    public String loginFail(){
+       /* //添加用户认证信息
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
                 map.get("username").toString(),
                 map.get("password").toString());
         //进行验证，这里可以捕获异常，然后返回对应信息
-        subject.login(usernamePasswordToken);
+        subject.login(usernamePasswordToken);*/
         return "login";
     }
 
     @RequestMapping(value = "/index")
     @ResponseBody
-    public String index(){
-        return "index";
+    public Map index(){
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("code",0);
+        map.put("href","index");
+        return map;
     }
 
     //登出
