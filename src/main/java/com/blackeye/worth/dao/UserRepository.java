@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends BaseRepository<SysUser,String> {
-@Query(value = "select * from User t where t.name = :name", nativeQuery = true)
-SysUser findByName(@Param("name") String name);
+    //@Query(value = "select * from sysUser t where t.name = :name", nativeQuery = true)
+    SysUser findByName(@Param("name") String name);
 
 }

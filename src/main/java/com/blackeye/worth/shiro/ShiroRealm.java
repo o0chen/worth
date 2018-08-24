@@ -13,6 +13,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 //实现AuthorizingRealm接口用户用户认证
 public class ShiroRealm extends AuthorizingRealm {
@@ -54,7 +56,6 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser sysUser = loginService.findByName(name);
         if (sysUser == null) {
             //这里返回后会报出对应异常
-            System.err.println("找不到用户");
             return null;
         } else {
             //这里验证authenticationToken和simpleAuthenticationInfo的信息

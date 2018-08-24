@@ -1,15 +1,27 @@
 package com.blackeye.worth.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.annotation.Resource;
+import javax.servlet.Filter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
@@ -17,13 +29,22 @@ public class ShiroConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShiroConfiguration.class);
 
+    //将自己的验证方式加入容器
+    @Bean
+    public Realm shiroRealm() {
+        Realm shiroRealm = new ShiroRealm();
+        return shiroRealm;
+    }
 
     //将自己的验证方式加入容器
     @Bean
-    public ShiroRealm shiroRealm() {
-        ShiroRealm shiroRealm = new ShiroRealm();
-        return shiroRealm;
+    public FormAuthFilter formAuthValidFilter() {
+        FormAuthFilter formAuthenticationFilter = new FormAuthFilter();
+        return formAuthenticationFilter;
     }
+
+
+
 
     //权限管理，配置主要是Realm的管理认证
     @Bean
@@ -50,13 +71,13 @@ public class ShiroConfiguration {
      * 注：anon，authcBasic，auchc，user是认证过滤器，
      * perms，roles，ssl，rest，port是授权过滤器
      *
-     * @param securityManager
+     * @param
      * @return
      */
-    @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+    @Bean("shiroFilterFactoryBean")
+    public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        shiroFilterFactoryBean.setSecurityManager(securityManager());
         Map<String,String> map = new HashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
         map.put("/js/**", "anon");
@@ -64,10 +85,12 @@ public class ShiroConfiguration {
         map.put("/img/**", "anon");
         //登出
         map.put("/logout","logout");
-        //登陆不需要认证
-        map.put("/login","anon");
         //对所有用户认证
-        map.put("/**","authc");
+        //登陆不需要认证
+        map.put("/login","authc");
+        map.put("/a/**","user");
+
+
         //登录
         shiroFilterFactoryBean.setLoginUrl("/login");
         //首页
@@ -76,14 +99,29 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setUnauthorizedUrl("/error");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
+
+        Map<String,Filter> fileters=new LinkedHashMap<String,Filter> ();
+        fileters.put("authc",formAuthValidFilter());
+        shiroFilterFactoryBean.setFilters(fileters);
+
         return shiroFilterFactoryBean;
     }
 
     //加入注解的使用，不加入这个注解不生效
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public FilterRegistrationBean delegatingFilterProxy(){
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilterFactoryBean");
+        filterRegistrationBean.setFilter(proxy);
+        return filterRegistrationBean;
     }
 }
