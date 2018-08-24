@@ -1,6 +1,7 @@
 package com.blackeye.worth.controller;
 
 
+import com.blackeye.worth.model.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -31,5 +32,9 @@ public class BaseController {
         return roleList;
     }
 
+
+    protected SysUser getLoginUser() {
+        return (SysUser) SecurityUtils.getSubject().getPrincipal();
+    }
 
 }
