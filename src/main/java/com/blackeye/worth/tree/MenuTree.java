@@ -29,10 +29,11 @@ public class MenuTree extends Tree {
 
     public MenuTree (SysMenuPermission menu) {
         super(menu);
-//        this.name = menu.getName();
-//        this.url = menu.getUrl();
-//        this.type = menu.getType().getLabel();
-//        this.permission = menu.getPermission();
+        this.name = menu.getName();
+        this.url = menu.getUrl();
+        this.type = menu.getType().getLabel();
+        this.setParentId(menu.getParentId());
+        //this.permission = menu.getPermission();
     }
 
     public String getName() {

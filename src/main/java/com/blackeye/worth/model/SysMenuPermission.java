@@ -27,6 +27,11 @@ public class SysMenuPermission extends BaseDojo {
     private String icon;
 
     /**
+     * 父级菜单ID
+     */
+    private String parentId;
+
+    /**
      * 菜单路径
      * 唯一
      */
@@ -87,4 +92,43 @@ public class SysMenuPermission extends BaseDojo {
         this.type = type;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getMenuOrder() {
+        return menuOrder;
+    }
+
+    public void setMenuOrder(Integer menuOrder) {
+        this.menuOrder = menuOrder;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
 }

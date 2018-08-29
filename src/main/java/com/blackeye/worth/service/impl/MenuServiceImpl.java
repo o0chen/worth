@@ -17,6 +17,7 @@ public class MenuServiceImpl extends BaseServiceImpl<SysUser,String> implements 
     private MenuRepository menuRepository;
     @Override
     public List<SysMenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type) {
-        return menuRepository.findByRoleIdAndType(roleId,type);
+       // return menuRepository.findByRoleIdAndType;
+        return null;
     }
 }

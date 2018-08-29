@@ -89,7 +89,7 @@ function getTemplate(id, url) {
 }
 
 function getUserMenus() {
-    var url = contentPath + 'user-menus';
+    var url = contentPath + '/user-menus';
     ajax(url, null, 'GET', {}).then(function(data) {
         log(data);
         index.menutrees = data.data;

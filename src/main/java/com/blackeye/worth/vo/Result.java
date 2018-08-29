@@ -13,7 +13,7 @@ public class Result<T> implements Serializable {
     /**
      * 请求成功
      */
-    public static final int SUCCESS = 1;
+    public static final int SUCCESS = 0;
     /**
      * 没有权限
      */
@@ -76,17 +76,17 @@ public class Result<T> implements Serializable {
     }
 
     public Result(Result<T> result) {
-//        ObjectUtils.requireNonNull(result);
-//        if (ObjectUtils.nonNull(result.code)) {
-//            this.code = result.code;
-//        }
-//        if (ObjectUtils.nonNull(result.message)) {
-//            this.message = result.message;
-//        }
-//        if (ObjectUtils.nonNull(result.isSuccess)) {
-//            this.isSuccess = result.isSuccess;
-//        }
-//        this.data = result.data;
+      //  ObjectUtils.requireNonNull(result);
+       // if (ObjectUtils.nonNull(result.code)) {
+            this.code = result.code;
+      //  }
+       // if (ObjectUtils.nonNull(result.message)) {
+            this.message = result.message;
+       // }
+        //if (ObjectUtils.nonNull(result.isSuccess)) {
+            this.isSuccess = result.isSuccess;
+       // }
+        this.data = result.data;
     }
 
 
