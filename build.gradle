@@ -12,12 +12,16 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+
 
 group = 'com.blackeye'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -25,8 +29,42 @@ repositories {
 
 
 dependencies {
+    //https://blog.csdn.net/ligang_csdn/article/details/78040211
+//    compileJava {
+//        options.compilerArgs << "-s"
+//        options.compilerArgs << "$projectDir/generated/java"
+//        options.compilerArgs << '-processor' << 'com.mysema.query.apt.jpa.JPAAnnotationProcessor' << '-s' << file(generatedSrcDir).absolutePath
+//
+//        doFirst {
+//            // make sure that directory exists
+//            file(new File(projectDir, "/generated/java")).mkdirs()
+//        }
+//    }
+//    clean.doLast {
+//        // clean-up directory when necessary
+//        file(new File(projectDir, "/generated")).deleteDir()
+//    }
+//    sourceSets {
+//        generated {
+//            java {
+//                srcDir "$projectDir/generated/java"
+//            }
+//        }
+//    }
+
+
+
+    compile('com.querydsl:querydsl-jpa')//:4.2.1
+    compile('com.querydsl:querydsl-apt')
+
+// 不同的两套
+// https://mvnrepository.com/artifact/com.mysema.maven/maven-apt-plugin
+//    compile('com.mysema.maven:apt-maven-plugin:1.1.3')
+//    compile "com.mysema.querydsl:querydsl-jpa:3.6.3"
+//    compile "com.mysema.querydsl:querydsl-apt:3.6.3:jpa"
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-quartz')
+//    compile('org.springframework.data:spring-data-commons')
 //    compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.apache.shiro:shiro-spring:1.3.2')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
@@ -38,4 +76,49 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/main/generated']
+        }
+    }
+}
+
+configurations {
+    querydslapt
+}
+
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/generated')
+        generatedSourceDirs += file('src/main/generated')
+    }
 }

@@ -20,7 +20,7 @@ public abstract class BaseServiceImpl<T,ID extends Serializable>  {//用以实�
     Validator globalValidator;*/
     protected BaseRepository<T,ID> baseRepository;
     @Autowired
-    private EntityManager entityManager;
+    public EntityManager entityManager;
 
 //    public void save(T t) {
 //        baseRepository.save(t);
@@ -30,7 +30,11 @@ public abstract class BaseServiceImpl<T,ID extends Serializable>  {//用以实�
 //        baseRepository.update(t);
 //    }
 
+
+
+
     public void myDbOperation(T t) {
+
         baseRepository.myDbOperation(t);
     }
 

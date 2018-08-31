@@ -22,4 +22,12 @@ public class UserController {
             return sysUser.getId() + " & " + sysUser.getName() + " & " + sysUser.getPassword();
         else return "null";
     }
+
+
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public String test(@RequestParam(value = "name") String name) {
+         userService.test(name);
+        return "null";
+    }
 }

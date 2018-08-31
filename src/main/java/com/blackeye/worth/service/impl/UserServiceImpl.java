@@ -2,8 +2,11 @@ package com.blackeye.worth.service.impl;
 
 import com.blackeye.worth.core.customer.BaseServiceImpl;
 import com.blackeye.worth.dao.UserRepository;
+import com.blackeye.worth.model.QSysUser;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IUserService;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,32 @@ import java.util.List;
 public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements IUserService{
     @Autowired
     private UserRepository userRepository;
+
+
+
+    public  void test(String name){
+//        userRepository.exi
+
+        //方式1
+        QSysUser customer = QSysUser.sysUser;
+        JPAQuery<?> query = new JPAQuery<Void>(entityManager);
+        SysUser bob = query.select(customer)
+                .from(customer)
+                .where(customer.name.eq(name))
+                .fetchOne();
+        System.out.println(bob.getPassword());
+
+        //方式2
+        JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
+        SysUser bob1 = jpaQueryFactory.select(customer).from(customer)
+                .where(customer.name.eq(name))
+                .fetchOne();
+        System.out.println(bob.getPassword());
+
+
+    }
+
+
 //    @Autowired
 //    private EntityManager entityManager;
     public SysUser findUserByName(String name) {
@@ -29,6 +58,20 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
         return sysUser;
     }
 
+//    /**
+//     * Details：多表连接查询
+//     */
+//    public List<SysMenuPermission> findAllBySysRoleId(String sysRoleId){
+//        //添加查询条件
+//        Predicate predicate = QSysRole.orderName.eq(orderName);
+//        JPAQuery<SysMenuPermission> jpaQuery = queryFactory.select(QOrder.order, QOrderItem.orderItem)
+//                .from(QOrder.order, QOrderItem.orderItem)
+//                .rightJoin(QOrder.order)
+//                .on(QOrderItem.orderItem.order.id.intValue().eq(QOrder.order.id.intValue()));
+//        jpaQuery.where(predicate);
+//        //拿到结果
+//        return jpaQuery.fetch();
+//    }
 
     /**
      * 代码动态sql示例
