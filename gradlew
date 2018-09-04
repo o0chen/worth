@@ -33,11 +33,11 @@ DEFAULT_JVM_OPTS=""
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD="maximum"
 
-warn ( ) {
+warn () {
     echo "$*"
 }
 
-die ( ) {
+die () {
     echo
     echo "$*"
     echo
@@ -123,7 +123,7 @@ if $cygwin ; then
         SEP="|"
     done
     OURCYGPATTERN="(^($ROOTDIRS))"
-    # Add a sysUser-defined pattern to the cygpath arguments
+    # Add a user-defined pattern to the cygpath arguments
     if [ "$GRADLE_CYGPATTERN" != "" ] ; then
         OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
     fi
@@ -155,7 +155,7 @@ if $cygwin ; then
 fi
 
 # Escape application args
-save ( ) {
+save () {
     for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
     echo " "
 }

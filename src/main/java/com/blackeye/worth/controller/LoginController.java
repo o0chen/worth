@@ -7,7 +7,6 @@ import com.blackeye.worth.service.ILoginService;
 import com.blackeye.worth.shiro.FormAuthFilter;
 import com.blackeye.worth.vo.Result;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -21,7 +20,6 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class LoginController {

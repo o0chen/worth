@@ -5,7 +5,7 @@ import com.blackeye.worth.model.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +17,9 @@ import java.util.List;
  */
 @RestController
 public class BaseController {
+
+    public PageRequest pageRequest=PageRequest.of(0,10);
+
 
 //    @RequestMapping("/session")
     public @ResponseBody   List<String> session(HttpServletRequest request){

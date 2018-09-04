@@ -99,7 +99,8 @@ public class ShiroConfiguration {
         //对所有用户认证
         //登陆不需要认证
         map.put("/login","authc");
-        map.put("/**","user");
+//        map.put("/**","user");
+        map.put("/**","anon");
 
 
         //登录

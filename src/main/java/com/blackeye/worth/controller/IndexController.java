@@ -1,13 +1,11 @@
 package com.blackeye.worth.controller;
 
-import com.blackeye.worth.enums.MenuTypeEnum;
 import com.blackeye.worth.model.SysMenuPermission;
 import com.blackeye.worth.service.IMenuService;
 import com.blackeye.worth.service.IUserService;
 import com.blackeye.worth.tree.MenuTree;
 import com.blackeye.worth.tree.TreeUtils;
 import com.blackeye.worth.vo.Result;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
