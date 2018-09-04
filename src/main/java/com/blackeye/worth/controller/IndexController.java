@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/index")
 public class IndexController extends BaseController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class IndexController extends BaseController {
      * 获取当前用户所拥有的菜单
      * @return
      */
-    @GetMapping("/user-menus")
+    @RequestMapping("/user-menus")
     @ResponseBody
     public Result userMenus() {
         // 获取当前用户所拥有的菜单
