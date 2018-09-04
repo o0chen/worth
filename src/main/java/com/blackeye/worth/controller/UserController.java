@@ -9,7 +9,10 @@ import com.querydsl.core.types.dsl.DateTimePath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,11 +48,11 @@ public class UserController extends BaseController{
     @RequestMapping(value = "/test1")
     @ResponseBody
     public Page<SysUser> alistSysUserByPage(@RequestParam MultiValueMap<String, String> paramsMap,
-                                            @QuerydslPredicate(root = SysUser.class) Predicate predicate
-                                            ) {
+                                            @QuerydslPredicate(root = SysUser.class) Predicate predicate,
+                                            @PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
 //                                            @PageableDefault(size = 5) PageRequest pageRequest) {
-        PageRequest pageRequest = PageRequest.of(paramsMap.get("page")==null?0:Integer.parseInt(paramsMap.get("page").get(0)),
-                paramsMap.get("page")==null?0:Integer.parseInt(paramsMap.get("page").get(0)));
+//        PageRequest pageRequest = PageRequest.of(paramsMap.get("page")==null?0:Integer.parseInt(paramsMap.get("page").get(0)),
+//                paramsMap.get("page")==null?0:Integer.parseInt(paramsMap.get("page").get(0)));
 
 //        BooleanBuilder
         //默认自动生成得Predicate条件都是等于，可以有两种方式去修改或扩展某认方式
@@ -70,7 +73,7 @@ public class UserController extends BaseController{
 //        predicate = QSysUser.sysUser.status.eq(UserStatusEnum.ACTIVE).and(predicate);
 
         predicate = dealTimeRangeBinding(predicate, QSysUser.sysUser.createDate, paramsMap);
-        return userService.listSysUserByPage(predicate, pageRequest);
+        return userService.listSysUserByPage(predicate, PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort()));
     }
 
     public Predicate dealTimeRangeBinding(Predicate predicate, DateTimePath dateTimePath, MultiValueMap<String, String> paramsMap) {
