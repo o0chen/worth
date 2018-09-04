@@ -3,7 +3,6 @@ package com.blackeye.worth.tree;
 import com.blackeye.worth.model.BaseDojo;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

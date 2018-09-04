@@ -17,7 +17,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 
-
 group = 'com.blackeye'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -96,7 +95,8 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
     classpath = configurations.compile + configurations.querydslapt
     options.compilerArgs = [
             "-proc:only",
-            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+            "-processor",
+            "com.querydsl.apt.jpa.JPAAnnotationProcessor"
     ]
     destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
 }
@@ -116,9 +116,28 @@ clean {
     delete sourceSets.generated.java.srcDirs
 }
 
+
+
 idea {
     module {
-        sourceDirs += file('src/main/generated')
+//        sourceDirs += file('src/main/generated')
         generatedSourceDirs += file('src/main/generated')
     }
 }
+
+
+eclipse {
+
+    classpath {
+        //default settings for downloading sources and Javadoc:
+        downloadSources = true
+        downloadJavadoc = false
+    }
+}
+
+//compileJava {
+//    classpath += sourceSets.generated.runtimeClasspath
+//}
+//dependencies {
+//    compile project('worth:worth_generated')
+//}

@@ -1,9 +1,13 @@
 package com.blackeye.worth.core.customer;
 
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
+import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
+import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
+import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
@@ -15,8 +19,8 @@ import java.util.Map;
 
 //必须使用该注解标明，此接口不是一个Repository Bean
 @NoRepositoryBean
-public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
-        implements BaseRepository<T, ID> {
+public class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpaRepository<T, ID>
+        implements BaseRepository<T, ID>,QuerydslBinderCustomizer {
     @Autowired
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,7 +29,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 
 
     public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
-        super(domainClass, em);
+        this(JpaEntityInformationSupport.getEntityInformation(domainClass, em), em);
         this.entityManager = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
@@ -35,6 +39,22 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         this.entityManager = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
+
+
+    @Override
+    public void customize(QuerydslBindings bindings, EntityPath root) {
+        Class clazz=root.getType();
+        try {
+            if(null!=clazz.getField("createDate")){
+                //TODO
+
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } finally {
+        }
+    }
+
 
     @Override
     public void sayHello(String name) {
@@ -87,5 +107,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 
         return entityManager.createQuery(query).getResultList();
     }
+
+
 
 }

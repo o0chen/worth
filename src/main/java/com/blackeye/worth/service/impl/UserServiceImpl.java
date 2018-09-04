@@ -5,15 +5,27 @@ import com.blackeye.worth.dao.UserRepository;
 import com.blackeye.worth.model.QSysUser;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IUserService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+
+//import javax.persistence.criteria.Predicate;
 
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements IUserService{
@@ -26,20 +38,70 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
 //        userRepository.exi
 
         //方式1
-        QSysUser customer = QSysUser.sysUser;
+        //http://www.querydsl.com/static/querydsl/latest/reference/html/index.html
+//        http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html
+        QSysUser qSysUser = QSysUser.sysUser;
         JPAQuery<?> query = new JPAQuery<Void>(entityManager);
-        SysUser bob = query.select(customer)
-                .from(customer)
-                .where(customer.name.eq(name))
+        SysUser bob = query.select(qSysUser)
+                .from(qSysUser)
+                .where(qSysUser.name.eq(name))
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
                 .fetchOne();
         System.out.println(bob.getPassword());
 
         //方式2
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
-        SysUser bob1 = jpaQueryFactory.select(customer).from(customer)
-                .where(customer.name.eq(name))
+        SysUser bob1 = jpaQueryFactory.select(qSysUser).from(qSysUser)
+                .where(qSysUser.name.eq(name))
                 .fetchOne();
         System.out.println(bob.getPassword());
+
+        //示例3
+        String[] names=new String[]{name};
+        JPAQuery<SysUser> query1 = jpaQueryFactory.selectFrom(qSysUser);
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String name1 : names) {
+            builder.or(qSysUser.name.eq(name1));
+        }
+        query1.where(builder);
+        List<SysUser> res=query1.fetch();
+        System.out.println(res.get(0).getPassword());
+
+
+//        示例4 表达式条件
+        BooleanExpression booleanExpression=qSysUser.name.startsWith("admi");
+        //-----------------------
+        Path<SysUser> person = Expressions.path(SysUser.class, "sys_user");
+        Path<String> personFirstName = Expressions.path(String.class, person, "name");
+        Constant<String> constant = (Constant<String>)Expressions.constant("admi");
+        Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
+
+
+//        示例5 case when 语句表达式
+        Expression<String> cases = new CaseBuilder()
+                .when(qSysUser.password.eq("*")).then("Premier")
+                .when(qSysUser.password.contains("*")).then("Gold")
+                .otherwise("Bronze");
+
+        ComparableExpressionBase<?> postTimePeriodsExp = qSysUser.createDate.year();
+
+        query.select(postTimePeriodsExp,cases).fetchAll();
+
+
+
+//        Expression<String> cases1 = customer.annualSpending
+//                .when(10000).then("Premier")
+//                .when(5000).then("Gold")
+//                .when(2000).then("Silver")
+//                .otherwise("Bronze");
+        Predicate predicate =qSysUser.name.startsWith("admi");
+        System.out.println(qSysUser.name.getMetadata().getName());
+        System.out.println(predicate.getClass());
+        System.out.println(predicate.getType());
+        System.out.println(predicate.getType().getName());
+
+
 
 
     }
@@ -86,11 +148,11 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
          */
         Specification<SysUser> specification=new Specification<SysUser>() {
             @Override
-            public Predicate toPredicate(Root<SysUser> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder cb) {
+            public javax.persistence.criteria.Predicate toPredicate(Root<SysUser> root,
+                                                                    CriteriaQuery<?> query,
+                                                                    CriteriaBuilder cb) {
                 //我理解为创建一个条件的集合
-                List<Predicate> predicates = new ArrayList<Predicate>();
+                List<javax.persistence.criteria.Predicate> predicates = new ArrayList<javax.persistence.criteria.Predicate>();
                 //判断传过来的name是否为null,如果不为null就加到条件中
                 if(sysUserParam.getName()!=null){
                     /** cb.equal（）相当于判断后面两个参数是否一致
@@ -108,7 +170,7 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
                     predicates.add(cb.equal(root.get("password").as(String.class),sysUserParam.getPassword()));
                 }
                 //创建一个条件的集合，长度为上面满足条件的个数
-                Predicate[] pre = new Predicate[predicates.size()];
+                javax.persistence.criteria.Predicate[] pre = new javax.persistence.criteria.Predicate[predicates.size()];
                 //这句大概意思就是将上面拼接好的条件返回去
                 return query.where(predicates.toArray(pre)).getRestriction();
 
@@ -117,6 +179,13 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
         List<SysUser> list= baseRepository.findAll(specification);
         System.out.println("查询返回的结果为"+list);
         return list;
+    }
+
+
+    @Override
+    public Page<SysUser> listSysUserByPage(Predicate predicate, PageRequest pageRequest) {
+
+        return this.userRepository.findAll(predicate, pageRequest);
     }
 
 

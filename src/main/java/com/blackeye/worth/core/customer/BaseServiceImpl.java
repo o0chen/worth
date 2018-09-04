@@ -1,9 +1,9 @@
 package com.blackeye.worth.core.customer;
 
-import com.blackeye.worth.model.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,6 +21,8 @@ public abstract class BaseServiceImpl<T,ID extends Serializable>  {//用以实�
     protected BaseRepository<T,ID> baseRepository;
     @Autowired
     public EntityManager entityManager;
+
+
 
 //    public void save(T t) {
 //        baseRepository.save(t);
@@ -89,5 +91,19 @@ public abstract class BaseServiceImpl<T,ID extends Serializable>  {//用以实�
         System.out.println("查询返回的结果为"+list);
         return list;
     }
+
+
+    /**
+     *分页查询
+     * @param predicate 通过controller传过来-根据用户请求的参数自动生成 Predicate PageRequest
+     * @param pageRequest
+     * @return
+     */
+    public Page<T> listByPage(com.querydsl.core.types.Predicate predicate, PageRequest pageRequest) {
+        return this.baseRepository.findAll(predicate, pageRequest);
+    }
+
+
+
 
 }
