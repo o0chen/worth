@@ -27,7 +27,6 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpaR
 
     public JPAQueryFactory queryFactory;
 
-
     public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
         this(JpaEntityInformationSupport.getEntityInformation(domainClass, em), em);
         this.entityManager = em;
@@ -109,5 +108,40 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpaR
     }
 
 
+//    @Override
+//    public T addOrUpdate(T entity) {
+//        try {
+//            Object obj=entity.getClass().getMethod("getId()").invoke(entity);
+//            if (obj == null ) {
+//                return null;
+//            }
+//            T saveTntity = (T)this.findOne((Example)obj);
+//            BeanCopyUtil.beanCopyWithIngore(entity, saveTntity, "id");
+//            return this.saveAndFlush(saveTntity);
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } finally {
+//        }
+//        return null;
+//    }
 
+
+//    @Override
+//    public boolean exists(String id) {
+//        return super.existsById((ID)id);
+//    }
+//
+//    @Override
+//    public void delete(String id) {
+//        super.deleteById((ID)id);
+//    }
+//
+//    @Override
+//    public T getOne(String id) {
+//        return super.getOne((ID)id);
+//    }
 }

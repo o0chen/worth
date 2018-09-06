@@ -14,8 +14,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +26,19 @@ import java.util.List;
 //import javax.persistence.criteria.Predicate;
 
 @Service("userService")
-public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements IUserService{
+public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
+    public UserServiceImpl(UserRepository userRepository) {
+        this.setBaseRepository(userRepository);
+        this.userRepository=userRepository;
+    }
 
+    //    @Override
+//    public SysUser saveOrUpdateSysUser(SysUser sysUser) {
+//        return this.saveOrUpdate(sysUser.getId(),sysUser);
+//    }
 
     public  void test(String name){
 //        userRepository.exi
@@ -182,11 +188,11 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
     }
 
 
-    @Override
-    public Page<SysUser> listSysUserByPage(Predicate predicate, PageRequest pageRequest) {
-
-        return this.userRepository.findAll(predicate, pageRequest);
-    }
+//    @Override
+//    public Page<SysUser> listSysUserByPage(Predicate predicate, PageRequest pageRequest) {
+//
+//        return this.userRepository.findAll(predicate, pageRequest);
+//    }
 
 
 }

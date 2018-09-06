@@ -1,10 +1,12 @@
 package com.blackeye.worth.model;
 
 import com.blackeye.worth.enums.UserStatusEnum;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
+@DynamicUpdate
 public class SysUser extends BaseDojo {
 
     public SysUser() {
@@ -21,7 +23,8 @@ public class SysUser extends BaseDojo {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="sys_role_id")//默认就是
     private SysRole sysRole;
 
     public String getName() {
