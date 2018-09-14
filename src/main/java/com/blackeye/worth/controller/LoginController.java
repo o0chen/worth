@@ -29,8 +29,9 @@ public class LoginController {
 
     //退出的时候是get请求，主要是用于退出
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(){
-        return "login";
+    @ResponseBody
+    public Result login(){
+        return new Result.Builder().code(-999).message("请登陆").isSuccess(false).build();
     }
 
     //post登录

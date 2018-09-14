@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IMenuService {
     List<SysMenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type);
+
+    SysMenuPermission findById(String id);
 }

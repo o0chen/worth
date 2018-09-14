@@ -44,4 +44,11 @@ public class IndexController extends BaseController {
         List<MenuTree> menuTrees = TreeUtils.buildMenuTree(new ArrayList<SysMenuPermission>(menuSet));
         return new Result.Builder().data(menuTrees).build();
     }
+
+
+    @RequestMapping("/getmenu")
+    @ResponseBody
+    public Result getmenu(String id){
+        return new Result.Builder().data(menuService.findById(id)).build();
+    }
 }
