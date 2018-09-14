@@ -4,6 +4,7 @@ import com.blackeye.worth.core.customer.BaseServiceImpl;
 import com.blackeye.worth.dao.MenuRepository;
 import com.blackeye.worth.enums.MenuTypeEnum;
 import com.blackeye.worth.model.SysMenuPermission;
+import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,12 @@ public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission, String> 
 
     @Override
     public List<SysMenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type) {
-        // return menuRepository.findByRoleIdAndType;
+       // return menuRepository.findByRoleIdAndType;
         return null;
+    }
+
+    @Override
+    public SysMenuPermission findById(String id) {
+        return  menuRepository.findById(id).get();
     }
 }

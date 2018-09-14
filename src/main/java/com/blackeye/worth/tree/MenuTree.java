@@ -3,6 +3,9 @@ package com.blackeye.worth.tree;
 
 import com.blackeye.worth.model.SysMenuPermission;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  */
 public class MenuTree extends Tree {
@@ -23,6 +26,21 @@ public class MenuTree extends Tree {
     private String type;
 
     /**
+     * VUE路径
+     */
+    private String index;
+
+    /**
+     * Vue使用菜单名称
+     */
+    private String title;
+
+
+    private Set<Tree> subs = new LinkedHashSet<>();
+
+    private String icon;
+
+    /**
      * 权限字符串
      */
 //    private String permission;
@@ -33,6 +51,9 @@ public class MenuTree extends Tree {
         this.url = menu.getUrl();
         this.type = menu.getType().getLabel();
         this.setParentId(menu.getParentId());
+        this.title=menu.getName();
+        this.index=menu.getUrl();
+        this.icon=menu.getIcon();
         //this.permission = menu.getPermission();
     }
 
@@ -60,7 +81,39 @@ public class MenuTree extends Tree {
         this.type = type;
     }
 
-//    public String getPermission() {
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Set<Tree> getSubs() {
+        return super.getChildren();
+    }
+
+    public void setSubs(Set<Tree> subs) {
+        super.setChildren(subs);
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    //    public String getPermission() {
 //        return permission;
 //    }
 //

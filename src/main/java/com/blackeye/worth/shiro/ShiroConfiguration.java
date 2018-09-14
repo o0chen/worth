@@ -2,16 +2,22 @@ package com.blackeye.worth.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+
+
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,6 +27,7 @@ import java.util.Map;
 public class ShiroConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShiroConfiguration.class);
+
 
     //将自己的验证方式加入容器
     @Bean
@@ -36,6 +43,16 @@ public class ShiroConfiguration {
         return formAuthenticationFilter;
     }
 
+    @Bean
+    public SessionManager sessionManager(){
+        SessionManager sessionManager=new SessionManager();
+        SimpleCookie simpleCookie=new SimpleCookie();
+        simpleCookie.setName("jeesite.session.id");
+        sessionManager.setSessionIdCookie(simpleCookie);
+        sessionManager.setSessionIdCookieEnabled(true);
+        return sessionManager;
+    }
+
 
 
 
@@ -44,6 +61,7 @@ public class ShiroConfiguration {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
@@ -81,16 +99,16 @@ public class ShiroConfiguration {
         //对所有用户认证
         //登陆不需要认证
         map.put("/login","authc");
-//        map.put("/**","user");
-        map.put("/**","anon");
+        map.put("/**","user");
+        //map.put("/**","anon");
 
 
         //登录
         shiroFilterFactoryBean.setLoginUrl("/login");
         //首页
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        //shiroFilterFactoryBean.setSuccessUrl("/index");
         //错误页面，认证不通过跳转
-        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/error");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 

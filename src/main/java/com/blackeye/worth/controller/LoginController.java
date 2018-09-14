@@ -4,13 +4,19 @@ package com.blackeye.worth.controller;
 import com.blackeye.worth.model.SysRole;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.ILoginService;
+import com.blackeye.worth.shiro.FormAuthFilter;
+import com.blackeye.worth.vo.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,13 +28,15 @@ public class LoginController {
 
     //退出的时候是get请求，主要是用于退出
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(){
-        return "login";
+    @ResponseBody
+    public Result login(){
+        return new Result.Builder().code(-999).message("请登陆").isSuccess(false).build();
     }
 
     //post登录
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String loginFail(){
+    @ResponseBody
+    public Result loginFail(HttpServletRequest request){
        /* //添加用户认证信息
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
@@ -36,7 +44,16 @@ public class LoginController {
                 map.get("password").toString());
         //进行验证，这里可以捕获异常，然后返回对应信息
         subject.login(usernamePasswordToken);*/
-        return "login";
+        SysUser principal=(SysUser)SecurityUtils.getSubject().getPrincipal();
+        if(principal!=null){
+            return new Result.Builder().code(0).message("登陆成功").isSuccess(true).build();
+        }
+
+        String message = (String)request.getAttribute(FormAuthFilter.DEFAULT_MESSAGE_PARAM);
+        if(StringUtils.isEmpty(message)){
+            message="用户或密码错误, 请重试.";
+        }
+        return new Result.Builder().code(-999).message(message).isSuccess(false).build();
     }
 
     @RequestMapping(value = "/index")

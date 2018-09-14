@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/index")
 public class IndexController extends BaseController {
 
     @Autowired
@@ -33,7 +34,7 @@ public class IndexController extends BaseController {
      * 获取当前用户所拥有的菜单
      * @return
      */
-    @GetMapping("/user-menus")
+    @RequestMapping("/user-menus")
     @ResponseBody
     public Result userMenus() {
         // 获取当前用户所拥有的菜单
@@ -42,5 +43,12 @@ public class IndexController extends BaseController {
         Set<SysMenuPermission> menuSet = new LinkedHashSet(userService.findUserByName("admin").getSysRole().getSysMenuPermissions());
         List<MenuTree> menuTrees = TreeUtils.buildMenuTree(new ArrayList<SysMenuPermission>(menuSet));
         return new Result.Builder().data(menuTrees).build();
+    }
+
+
+    @RequestMapping("/getmenu")
+    @ResponseBody
+    public Result getmenu(String id){
+        return new Result.Builder().data(menuService.findById(id)).build();
     }
 }
