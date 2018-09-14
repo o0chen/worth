@@ -2,9 +2,8 @@ package com.blackeye.worth.core.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-
+import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
@@ -33,7 +32,9 @@ public interface BaseRepository<T, ID extends Serializable> extends JpaRepositor
 	//基于Specification的方式进行查询，使用的是CriteriaQuery进行查询
 	List<Object[]> queryBySpecification(CriteriaQuery<Object[]> query);
 
-
-
-
+//    boolean exists(String id);
+//
+//	void delete(String id);
+//
+//	T getOne(String id);
 }

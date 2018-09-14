@@ -12,9 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission,String> implements IMenuService {
+public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission, String> implements IMenuService {
+
+    public MenuServiceImpl(MenuRepository menuRepository) {
+        this.setBaseRepository(menuRepository);
+        this.menuRepository = menuRepository;
+    }
+
     @Autowired
     private MenuRepository menuRepository;
+
     @Override
     public List<SysMenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type) {
        // return menuRepository.findByRoleIdAndType;

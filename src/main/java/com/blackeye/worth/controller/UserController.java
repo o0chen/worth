@@ -14,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -44,10 +41,18 @@ public class UserController extends BaseController{
 
 
 
+    @RequestMapping(value = "/addOrUpdate")
+    @ResponseBody
+    public SysUser addOrUpdateSysUser(@RequestBody SysUser sysUser) {
+        return userService.saveOrUpdate(sysUser.getId(),sysUser);
+    }
+
+
+
 
     @RequestMapping(value = "/test1")
     @ResponseBody
-    public Page<SysUser> alistSysUserByPage(@RequestParam MultiValueMap<String, String> paramsMap,
+    public Page<SysUser> listSysUserByPage(@RequestParam MultiValueMap<String, String> paramsMap,
                                             @QuerydslPredicate(root = SysUser.class) Predicate predicate,
                                             @PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
 //                                            @PageableDefault(size = 5) PageRequest pageRequest) {
@@ -73,7 +78,8 @@ public class UserController extends BaseController{
 //        predicate = QSysUser.sysUser.status.eq(UserStatusEnum.ACTIVE).and(predicate);
 
         predicate = dealTimeRangeBinding(predicate, QSysUser.sysUser.createDate, paramsMap);
-        return userService.listSysUserByPage(predicate, PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort()));
+//        return userService.listSysUserByPage(predicate, PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort()));
+        return userService.listByPage(predicate, PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort()));
     }
 
     public Predicate dealTimeRangeBinding(Predicate predicate, DateTimePath dateTimePath, MultiValueMap<String, String> paramsMap) {
