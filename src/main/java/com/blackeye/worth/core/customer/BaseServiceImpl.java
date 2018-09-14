@@ -1,6 +1,8 @@
 package com.blackeye.worth.core.customer;
 
 import com.blackeye.worth.utils.BeanCopyUtil;
+import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -15,6 +18,7 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service("baseService")
 public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {//用以实现jpa中得各种功能和添加公用功能
@@ -30,17 +34,49 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     @Autowired
     public EntityManager entityManager;
 
-//    public BaseServiceImpl(BaseRepository<T, ID> baseRepository) {
-//        this.baseRepository = baseRepository;
-//    }
 
-    //    public void save(T t) {
-//        baseRepository.save(t);
-//    }
+    @Override
+    public List<Object[]> queryBySql(String sql) {
+        List<Object[]> list = entityManager
+                .createNativeQuery(sql)//eg："select address,count(*) from t_student group by address"
+//	弃用			.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP)
+                .getResultList();
 
-//    public void update(T t) {
-//        baseRepository.update(t);
-//    }
+        return list;
+    }
+
+    @Override
+    public List<Map> queryMapBySql(String sql) {
+//        List<Map> list = entityManager
+//                .createNativeQuery(sql, java.util.Map.class)//eg;"select address,count(*) from t_student group by address"
+//                .getResultList();
+        Query query = entityManager.createNativeQuery(sql);
+        query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List list = query.getResultList();
+
+        return list;
+    }
+
+
+    @Override
+    public List<Object[]> queryByHql(String hql) {
+        List<Object[]> list = entityManager
+                .createQuery(hql)//"select address,count(*) from Student group by address"
+                .getResultList();
+        return list;
+    }
+
+    @Override
+    public List<Object[]> queryBySpecification(CriteriaQuery<Object[]> query) {
+//		//根据地址分组查询，并且学生数量大于3的所有地址
+//		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+//		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+//		Root root = query.from(SysUser.class);
+//		query.multiselect(root.get("address"),builder.count(root.get("id"))).
+//				.groupBy(root.get("address")).having(builder.gt(builder.count(root.get("id")),3));
+
+        return entityManager.createQuery(query).getResultList();
+    }
 
 
     public void myDbOperation(T t) {
