@@ -1,6 +1,7 @@
 package com.blackeye.worth.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import java.util.Objects;
  * 基本entity，项目中所有entity都继承它
  */
 @MappedSuperclass
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 public abstract class BaseDojo {
 
     /**

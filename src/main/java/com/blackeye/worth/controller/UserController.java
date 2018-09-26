@@ -3,9 +3,7 @@ package com.blackeye.worth.controller;
 import com.blackeye.worth.model.QSysUser;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IUserService;
-import com.blackeye.worth.utils.DateX;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.DateTimePath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,22 +80,5 @@ public class UserController extends BaseController{
         return userService.listByPage(predicate, PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort()));
     }
 
-    public Predicate dealTimeRangeBinding(Predicate predicate, DateTimePath dateTimePath, MultiValueMap<String, String> paramsMap) {
-        String name = dateTimePath.getMetadata().getName();
-        if (paramsMap.get(name + "_begin") != null && paramsMap.get(name + "_end") != null) {
-            String beginTime = paramsMap.get(name + "_begin").get(0);
-            String endTime = paramsMap.get(name + "_begin").get(0);
-            predicate = dateTimePath.between(DateX.parseDateTime(beginTime), DateX.parseDateTime(endTime))
-                    .and(predicate);
-        } else if (paramsMap.get(name + "_begin") != null && paramsMap.get(name + "_end") == null) {
-            String beginTime = paramsMap.get(name + "_begin").get(0);
-            predicate = dateTimePath.after(DateX.parseDateTime(beginTime))
-                    .and(predicate);
-        } else if (paramsMap.get(name + "_begin") == null && paramsMap.get(name + "_end") != null) {
-            String endTime = paramsMap.get(name + "_end").get(0);
-            predicate = dateTimePath.before(DateX.parseDateTime(endTime))
-                    .and(predicate);
-        }
-        return predicate;
-    }
+
 }

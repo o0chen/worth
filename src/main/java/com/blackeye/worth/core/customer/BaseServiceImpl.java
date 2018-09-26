@@ -17,6 +17,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,21 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     Validator globalValidator;*/
 //    @Autowired
     protected BaseRepository<T, ID> baseRepository;
+
+
+    private static Map<String, BaseRepository> registryMap = new HashMap<String, BaseRepository>();
+    @Override
+    public BaseRepositoryImpl getBaseRepositoryByClass(Class<T> clazz){
+        String clazzName = clazz.getName();
+        if(!registryMap.containsKey(clazzName)){
+            synchronized(registryMap){
+                if(!registryMap.containsKey(clazzName)){
+                    return new BaseRepositoryImpl(clazz,entityManager);
+                }
+            }
+        }
+        return (BaseRepositoryImpl) registryMap.get(clazzName);
+    }
 
     public void setBaseRepository(BaseRepository<T, ID> baseRepository) {
         this.baseRepository = baseRepository;

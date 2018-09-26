@@ -12,6 +12,8 @@ import java.util.Map;
 public interface BaseService<T,ID extends Serializable> {
 
 
+	BaseRepositoryImpl getBaseRepositoryByClass(Class<T> clazz);
+
 	//基于原生态的sql进行查询h
 	List<Object[]> queryBySql(String sql);
 	//基于原生态的sql进行查询,返回map,性能不如返回数组
@@ -56,4 +58,5 @@ public interface BaseService<T,ID extends Serializable> {
 
 	@Transactional
 	T saveOrUpdate(ID id, T t);
+
 }
