@@ -7,6 +7,7 @@ import com.blackeye.worth.model.QBaseDojo;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.utils.BeanCopyUtil;
 import com.blackeye.worth.utils.DateX;
+import com.blackeye.worth.utils.ObjectMapUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.DateTimePath;
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  */
@@ -235,7 +237,15 @@ public class BaseController {
     @ResponseBody
     @RequestMapping(value = "/saveOne{entity}")//待验证
     public Object saveOne(@PathVariable String entity, Object entityData) {
-        return baseService.getBaseRepositoryByClass(getClassByModelName(entity)).save(entityData);
+
+        Class cls=getClassByModelName(entity);
+        try{
+            Object o = ObjectMapUtils.mapToObject((Map) entityData, cls);
+            return baseService.getBaseRepositoryByClass(cls).save(o);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -247,7 +257,7 @@ public class BaseController {
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/saveOrUpdate{entity}")//待验证
-    public Object saveOrUpdate(@PathVariable String entity, String id, Object object) {
+    public Object saveOrUpdate(@PathVariable String entity, String id,@RequestBody Object object) {
         if (id != null) {
             Object db = get(entity, id);
             if (db != null) {

@@ -4,10 +4,7 @@ import com.blackeye.worth.enums.MenuTypeEnum;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 public class SysMenuPermission extends BaseDojo {
@@ -37,14 +34,14 @@ public class SysMenuPermission extends BaseDojo {
      */
     @Column(length = 255)
     @NotBlank(message = "路径不能为空")
-    @Pattern(regexp = "^/.*?", message = "无效的路径地址")
+    //@Pattern(regexp = "^/.*?", message = "无效的路径地址")
     private String url;
 
     /**
      * 菜单顺序
      */
-    @Min(value = 1, message = "顺序在1-10之间")
-    @Max(value = 10, message = "顺序在1-10之间")
+    @Min(value = 1, message = "顺序在1-1000之间")
+    @Max(value = 1000, message = "顺序在1-1000之间")
     private Integer menuOrder;
 
     /**
@@ -60,6 +57,13 @@ public class SysMenuPermission extends BaseDojo {
      */
     @Enumerated(EnumType.STRING)
     private MenuTypeEnum type;
+
+
+    /**
+     * 是否显示  0不显示  1显示
+     */
+    @NotNull(message="不能为null")
+    private  Integer isShow;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    private SysRole role;
@@ -130,5 +134,13 @@ public class SysMenuPermission extends BaseDojo {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(Integer isShow) {
+        this.isShow = isShow;
     }
 }
