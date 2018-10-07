@@ -3,6 +3,7 @@ package com.blackeye.worth.controller;
 
 import com.blackeye.worth.core.customer.BaseService;
 import com.blackeye.worth.model.BaseDojo;
+import com.blackeye.worth.model.QBaseDojo;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.utils.BeanCopyUtil;
 import com.blackeye.worth.utils.DateX;
@@ -75,7 +76,7 @@ public class BaseController {
         return predicate;
     }
 
-    protected Class getClassByModelName(String entity) {
+    public static Class getClassByModelName(String entity) {
         Class clazz = null;
         try {
             clazz = Class.forName("com.blackeye.worth.model." + entity);
@@ -127,15 +128,36 @@ public class BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/list{entity}ByPage")
-    public Page listByPage(@PathVariable String entity,
-                           @QuerydslPredicate(root = BaseDojo.class) Predicate predicate,
+    public Page listByPage(@RequestParam MultiValueMap<String, String> paramsMap,
+                           @PathVariable String entity,
+                           @QuerydslPredicate(root = BaseDojo.class) Predicate predicate,//自动处理得只有BaseDojo里面得属相
                            @PageableDefault(value = 10, sort = {"createDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        Class clazz = getClassByModelName(entity);
-        if (predicate == null) {
-            return this.baseService.getBaseRepositoryByClass(clazz).findAll(pageable);
-        } else {
-            return this.baseService.getBaseRepositoryByClass(clazz).findAll(predicate, pageable);
-        }
+            Class clazz = getClassByModelName(entity);
+
+            predicate = dealTimeRangeBinding(predicate, QBaseDojo.baseDojo.createDate, paramsMap);
+            if (predicate == null) {
+                return this.baseService.getBaseRepositoryByClass(clazz).findAll(pageable);
+            } else {
+                return this.baseService.getBaseRepositoryByClass(clazz).findAll(predicate, pageable);
+            }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/search{entity}ByPage")
+    public Page searchByPage(@RequestParam MultiValueMap<String, String> paramsMap,
+                           @PathVariable String entity,
+                           @PageableDefault(value = 10, sort = {"createDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
+            Class clazz = getClassByModelName(entity);
+            return this.baseService.searchAllByPage(clazz,paramsMap,pageable);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/searchAll{entity}")
+    public List searchAll(@RequestParam MultiValueMap<String, String> paramsMap,
+                           @PathVariable String entity) {
+            Class clazz = getClassByModelName(entity);
+//            this.baseService;
+            return this.baseService.searchAll(clazz,paramsMap);
     }
 
 

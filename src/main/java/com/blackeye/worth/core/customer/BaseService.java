@@ -52,6 +52,18 @@ public interface BaseService<T,ID extends Serializable> {
 
 	Page<T> findAll(Specification<T> specification, Pageable pageable);
 
+
+	/**
+	 * search开头方法，方便用于后台调用，也可在controller使用；
+	 * 非mvc自动封装参数，手动配置参数名称（不需要过多之定义binding,仅用于and查询,范围查询方便），规范见
+	 * @see com.blackeye.worth.core.params.extend.SearchUtils
+	 * @param params
+	 * @return
+	 */
+	List<T> searchAll(T t, Map<String, Object> params);
+
+	Page<T> searchAllByPage(T t, Map<String, Object> params, Pageable pageable);
+
 	T saveOne(T entity);
 
 	List<T> findAll(Example<T> example);

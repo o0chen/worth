@@ -1,5 +1,6 @@
 package com.blackeye.worth.core.customer;
 
+import com.blackeye.worth.core.params.extend.SearchUtils;
 import com.blackeye.worth.utils.BeanCopyUtil;
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;
@@ -233,6 +234,34 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     @Override
     public Page<T> findPage(Specification<T> specification, Pageable pageable) {
         return baseRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public List<T> searchAll(T t,Map<String, Object> params) {
+        Specification<T> spec = new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                //  query可设置排序
+                SearchUtils.autoBuildQuery(root, query, cb, params);
+                return null;
+            }
+        };
+        List<T> list = baseRepository.findAll(spec);
+        return list;
+    }
+
+    @Override
+    public Page<T> searchAllByPage(T t,Map<String, Object> params, Pageable pageable) {
+        Specification<T> spec = new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                //  query可设置排序
+                SearchUtils.autoBuildQuery(root, query, cb, params);
+                return null;
+            }
+        };
+        Page<T> list = baseRepository.findAll(spec,pageable);
+        return list;
     }
 
 
