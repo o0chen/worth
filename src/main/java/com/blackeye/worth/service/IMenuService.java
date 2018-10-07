@@ -10,4 +10,9 @@ public interface IMenuService extends BaseService<SysMenuPermission,String> {
     List<SysMenuPermission> findByRoleIdAndType(String roleId, MenuTypeEnum type);
 
     SysMenuPermission findById(String id);
+
+    Integer getMaxMenuOrder();
+
+    List<SysMenuPermission> findByParentId(String parentId);
+
 }

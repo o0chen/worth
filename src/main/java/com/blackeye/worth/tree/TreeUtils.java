@@ -6,6 +6,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class TreeUtils {
         trees.stream().forEach(t -> {
             if (!StringX.isEmpty(t.getParentId()) && t.getParentId().equals(tree.getId())) {
                 if (CollectionUtils.isEmpty(tree.getChildren())) {
-                    tree.setChildren(new HashSet<>());
+                    tree.setChildren(new LinkedHashSet<>());
                 }
                 tree.getChildren().add(findChildren((T) t, trees));
             }

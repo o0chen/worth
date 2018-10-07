@@ -18,6 +18,7 @@ public class SysRole extends BaseDojo {
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "menu_permission_id", referencedColumnName = "id")
     )
+    @OrderBy("menuOrder ASC")
     private List<SysMenuPermission> sysMenuPermissions;
 
 

@@ -32,4 +32,17 @@ public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission, String> 
     public SysMenuPermission findById(String id) {
         return  menuRepository.findById(id).get();
     }
+
+    /** MenuOrder
+     * 返回最大排序
+     * @return
+     */
+    public Integer getMaxMenuOrder(){
+        return menuRepository.getMaxMenuOrder();
+    }
+
+    @Override
+    public List<SysMenuPermission> findByParentId(String parentId) {
+        return menuRepository.findByParentId(parentId);
+    }
 }
