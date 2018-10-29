@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import static com.blackeye.worth.core.params.extend.QueryDslUtils.getClassByModelName;
+
 /**
  * {@link HandlerMethodArgumentResolver} to allow injection of {@link com.querydsl.core.types.Predicate} into Spring MVC
  * controller methods.
@@ -109,7 +111,7 @@ public class QuerydslPredicateArgumentResolver implements HandlerMethodArgumentR
             String urlstr = request.getRequestURI();
             urlstr = urlstr.substring(urlstr.lastIndexOf('/'));
             String entityName=urlstr.substring(5).replace("ByPage","") ;//listByPage
-            Class clazz = BaseController.getClassByModelName(entityName);
+            Class clazz = getClassByModelName(entityName);
             domainType = extractTypeInfo(parameter, clazz).getRequiredActualType();
         } else {
             domainType = extractTypeInfo(parameter).getRequiredActualType();

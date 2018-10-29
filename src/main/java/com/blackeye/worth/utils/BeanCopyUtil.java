@@ -7,6 +7,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class BeanCopyUtil {
@@ -48,7 +49,6 @@ public class BeanCopyUtil {
     }
 
 
-
     // 定义jackson对象
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -57,7 +57,7 @@ public class BeanCopyUtil {
      * 将json结果集转化为对象
      *
      * @param jsonData json数据
-     * @param clazz 对象中的object类型
+     * @param clazz    对象中的object类型
      * @return
      */
     public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
@@ -74,6 +74,7 @@ public class BeanCopyUtil {
      * 将对象转换成json字符串。
      * <p>Title: pojoToJson</p>
      * <p>Description: </p>
+     *
      * @param data
      * @return
      */
@@ -87,6 +88,24 @@ public class BeanCopyUtil {
         return null;
     }
 
+
+    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) throws Exception {
+        if (map == null)
+            return null;
+
+        Object obj = beanClass.newInstance();
+
+        org.apache.commons.beanutils.BeanUtils.populate(obj, map);
+
+        return obj;
+    }
+
+    public static Map<?, ?> objectToMap(Object obj) {
+        if (obj == null)
+            return null;
+
+        return new org.apache.commons.beanutils.BeanMap(obj);
+    }
 
 
 }

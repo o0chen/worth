@@ -25,8 +25,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * {@link HandlerMethodArgumentResolver} to allow injection of {@link com.querydsl.core.types.Predicate} into Spring MVC
  * controller methods.
  *
- * @author Christoph Strobl
- * @author Oliver Gierke
  * @since 1.11
  */
 @Component

@@ -1,18 +1,20 @@
 package com.blackeye.worth.utils;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import sun.management.counter.Variability;
 
 public class ObjectMapUtils {
 
@@ -284,4 +286,28 @@ public class ObjectMapUtils {
 		//        User newUser = (User) mapToObject(map,User.class);
 
 	}
+
+	//新增通过ObjectMapper转换含有复杂属性的mapper--上面的方法仅处理简单属性
+
+	static ObjectMapper mapper=new ObjectMapper();
+	static {
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+//        mapper.getDeserializationConfig().with(formatter1).with(formatter2);
+		mapper.setDateFormat(formatter1).setDateFormat(formatter2);
+
+	}
+
+
+	public static Object mapToObject3(Map<String, Object> map, Class<?> clazz) throws Exception {
+		String jsonStr=mapper.writeValueAsString(map);
+		return mapper.readValue(jsonStr,clazz);
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.blackeye.worth.model;
 
 
+import com.blackeye.worth.core.annotations.KeyWordSearch;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -51,6 +52,7 @@ public abstract class BaseDojo {
     /**
      * 描述
      */
+    @KeyWordSearch
     private String description;
 
     /**
@@ -58,12 +60,13 @@ public abstract class BaseDojo {
      * 0 未删除
      * 1 删除
      */
+    @Column(columnDefinition ="0")
     private Integer delFlag=0;
 
-    public BaseDojo() {
-        createDate = new Date();
-        modifyDate = new Date();
-    }
+//    public BaseDojo() {
+//        createDate = new Date();
+//        modifyDate = new Date();
+//    }
 
     public String getId() {
         return id;

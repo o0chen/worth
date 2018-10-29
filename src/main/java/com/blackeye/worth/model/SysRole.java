@@ -12,7 +12,7 @@ public class SysRole extends BaseDojo {
     //@OneToOne(fetch = FetchType.EAGER)
     //private SysUser sysUser;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH,fetch = FetchType.LAZY)
     @JoinTable(
             name = "sys_role_menu_permission",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
