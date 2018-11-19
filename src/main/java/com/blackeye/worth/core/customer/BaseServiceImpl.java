@@ -1,6 +1,8 @@
 package com.blackeye.worth.core.customer;
 
+import com.blackeye.worth.core.params.extend.SearchUtils;
 import com.blackeye.worth.utils.BeanCopyUtil;
+import com.blackeye.worth.utils.ObjectMapUtils;
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,17 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ *注意： * Class<T> 本组件中含有该类型参数的方法均可以之间使用，不需要子类注入泛型T；反之需要通过子类实例中调用
+ * @param <T>
+ * @param <ID>
+ */
 @Service("baseService")
 public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {//用以实现jpa中得各种功能和添加公用功能
     /*@Autowired 还是放controller比较合适
@@ -111,13 +119,14 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
      * @param
      * @return
      */
-    public List<T> selectDojo(T dojo) {
+    @Override
+    public List<T> selectByAutoBuild(Map<String, Object> params) {
         /**root ：我们要查询的类型
          * query：添加查询条件
          * cb: 构建条件
          * specification为一个匿名内部类
          */
-        Specification<T> specification = new Specification<T>() {
+   /*     Specification<T> specification = new Specification<T>() {
             @Override
             public Predicate toPredicate(Root<T> root,
                                          CriteriaQuery<?> query,
@@ -129,15 +138,16 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
                 //判断传过来的name是否为null,如果不为null就加到条件中
 //                if(sysUserParam.getName()!=null){
-                /** cb.equal（）相当于判断后面两个参数是否一致
+                *//** cb.equal（）相当于判断后面两个参数是否一致
                  *root相当于我们的实体类的一个路径，使用get可以获取到我们的字段，因为我的cityid为Long类型
                  * 所以是as(Long.class)
                  *如果为Int,就是as(Integer.class) 第二个参数为前台传过来的参数，这句话就相当于
                  * 数据库字段的值name = 前台传过来的值sysUserParam.getName()
-                 */
+                 *//*
 //                    predicates.add(cb.equal(root.<String>get("name").,dojo));
                 //  predicates.add(cb.like(root.get("name"),"%"+sysUserParam.getName()+"%"));//like
 //                }
+
 
                 //创建一个条件的集合，长度为上面满足条件的个数
                 Predicate[] pre = new Predicate[predicates.size()];
@@ -145,7 +155,14 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
                 return query.where(predicates.toArray(pre)).getRestriction();
 
             }
-        };   //这里我们按照返回来的条件进行查询，就能得到我们想要的结果
+        };*/   //这里我们按照返回来的条件进行查询，就能得到我们想要的结果
+        Specification<T> specification = new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                SearchUtils.autoBuildQuery(root, query, cb, params);
+                return null;
+            }
+        };
         List<T> list = baseRepository.findAll(specification);
         System.out.println("查询返回的结果为" + list);
         return list;
@@ -221,7 +238,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
+    public Page<T> findAll(Pageable pageable) {//方便子类调用
         return baseRepository.findAll(pageable);
     }
 
@@ -235,8 +252,40 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         return baseRepository.findAll(specification, pageable);
     }
 
+    @Override
+    public Page findAll(com.querydsl.core.types.Predicate predicate, Pageable pageable) {
+        return baseRepository.findAll(predicate, pageable);
+    }
 
-///*********************************************************
+    ///*********************************************************
+
+    @Override
+    public List<T> searchAll(Class<T> clazz,Map<String, Object> params) {
+        Specification<T> spec = new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                //  query可设置排序
+                SearchUtils.autoBuildQuery(root, query, cb, params);
+                return null;
+            }
+        };
+        List<T> list = this.getBaseRepositoryByClass(clazz).findAll(spec);
+        return list;
+    }
+    @Override
+    public Page<T> searchAllByPage(Class<T> clazz,Map<String, Object> params, Pageable pageable) {
+        Specification<T> spec = new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                //  query可设置排序
+                SearchUtils.autoBuildQuery(root, query, cb, params);
+                return null;
+            }
+        };
+        Page<T> list = this.getBaseRepositoryByClass(clazz).findAll(spec,pageable);
+        return list;
+    }
+
 
     @Transactional
     public T updateOne(ID id, T entity) {
@@ -245,21 +294,19 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         return tdb;
     }
 
-//    @Transactional
-//    public <TT, TID extends Serializable> TT updateOne(BaseRepository<TT, TID> baseRepository, TID id, TT entity) {
-//        TT tdb = baseRepository.getOne(id);
-//        BeanCopyUtil.beanCopyWithIngore(entity, tdb,"id");
-//        return tdb;
-//    }
+    @Transactional
+    @Override
+    public T updateOne(Class<T> clazz,ID id, T entity) {
+        T tdb = (T)this.getBaseRepositoryByClass(clazz).getOne(id);
+        BeanCopyUtil.beanCopyWithIngore(entity, tdb,"id");
+        return tdb;
+    }
+
 
     @Override
     public T saveOne(T entity) {
         return baseRepository.save(entity);
     }
-
-//    public <TT, TID extends Serializable> TT saveOne(BaseRepository<TT, TID> baseRepository, TT entity) {
-//        return baseRepository.save(entity);
-//    }
 
     @Override
     public List<T> findAll(Example<T> example) {
@@ -278,5 +325,102 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         return saveOne(t);
     }
 
+    @Transactional
+    @Override
+    public T saveOrUpdate(Class<T> clazz, ID id, T t)  {
+        try {
+            if(t.getClass().equals(LinkedHashMap.class))
+            {
+                 if(id==null){
+                    id=(ID)((Map<String, Object>) t).get("id");
+                }
+                t=(T)ObjectMapUtils.mapToObject3((Map<String, Object>) t,clazz);
+            }
 
+            if (id != null) {
+                T db = get(clazz,id);
+                if (db != null) {
+                    return updateOne(clazz,id, t);
+                }
+            }
+            return saveOne(clazz,t);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(Class<T> clazz, ID id) {
+        this.getBaseRepositoryByClass(clazz).deleteById(id);
+    }
+
+    @Override
+    public void delete(Class<T> clazz, T t) {
+        this.getBaseRepositoryByClass(clazz).delete(t);
+    }
+    @Transactional
+    @Override
+    public T saveOne(Class<T> clazz, T entity) {
+        return (T)this.getBaseRepositoryByClass(clazz).save(entity);
+    }
+    @Override
+    public T get(Class<T> clazz, ID id) {
+        return (T)this.getBaseRepositoryByClass(clazz).getOne(id);
+    }
+    @Override
+    public Page<T> findAll(Class<T> clazz, Pageable pageable) {
+        return this.getBaseRepositoryByClass(clazz).findAll(pageable);
+    }
+
+    @Override
+    public Page findAll(Class<T> clazz, com.querydsl.core.types.Predicate predicate, Pageable pageable) {
+        return this.getBaseRepositoryByClass(clazz).findAll(predicate,pageable);
+    }
+
+    @Override
+    public T saveAndFlush(Class<T> clazz, Object data) {
+        return (T)this.getBaseRepositoryByClass(clazz).saveAndFlush(data);
+    }
+
+
+
+
+
+
+    @Override
+    public T getOne(Class<T> clazz, String id) {
+        return null;
+    }
+
+    @Override
+    public boolean existsById(Class<T> clazz, String id) {
+        return false;
+    }
+
+    @Override
+    public long count(Class<T> clazz) {
+        return 0;
+    }
+
+    @Override
+    public List<T> findAll(Class<T> clazz) {
+        return null;
+    }
+
+    @Override
+    public List<T> findAll(Class<T> clazz, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public List<T> findAll(Class<T> clazz, Specification<Object> specification) {
+        return null;
+    }
+
+    @Override
+    public T save(Class<T> clazz, Object o) {
+        return null;
+    }
 }

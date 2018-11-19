@@ -162,6 +162,12 @@ public class StringX {
 		return m.replaceAll("").trim();
 	}
 
+	public static boolean equals(String str1,String str2){
+		return str1.equals(str2);
+	}
+
+
+
 //	/**
 //	 * @Title: filterEmoji
 //	 * @Description: 过滤表情符号

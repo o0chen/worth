@@ -1,5 +1,6 @@
 package com.blackeye.worth.model;
 
+import com.blackeye.worth.core.annotations.KeyWordSearch;
 import com.blackeye.worth.enums.UserStatusEnum;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -10,9 +11,13 @@ import javax.persistence.*;
 public class SysUser extends BaseDojo {
 
     public SysUser() {
+        super();
     }
 
+    @KeyWordSearch
     private String name;
+    @KeyWordSearch
+    private String mobile;
 
     /**
      * 用户状态
@@ -23,8 +28,10 @@ public class SysUser extends BaseDojo {
 
     private String password;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="sys_role_id")//默认就是
+    @ManyToOne(cascade = CascadeType.DETACH)//cascade-串联操作
+    @JoinColumn(name="sys_role_id",updatable = true,insertable = true)//默认就是
+//    @OnDelete(action = OnDeleteAction.CASCADE) 删除user时删除role
+//    @ManyToOne(cascade=CascadeType.REMOVE) 删除role时删除user
     private SysRole sysRole;
 
     public String getName() {
@@ -57,5 +64,13 @@ public class SysUser extends BaseDojo {
 
     public void setSysRole(SysRole sysRole) {
         this.sysRole = sysRole;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
