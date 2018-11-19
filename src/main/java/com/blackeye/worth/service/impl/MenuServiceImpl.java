@@ -42,7 +42,7 @@ public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission, String> 
     }
 
     @Override
-    public List<SysMenuPermission> findByParentId(String parentId) {
-        return menuRepository.findByParentId(parentId);
+    public List<SysMenuPermission> findByParentIdOrderByMenuOrderAsc(String parentId) {
+        return menuRepository.findByParentIdOrderByMenuOrderAsc(parentId);
     }
 }

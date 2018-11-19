@@ -45,6 +45,9 @@ public class ShiroConfiguration {
         simpleCookie.setName("jeesite.session.id");
         sessionManager.setSessionIdCookie(simpleCookie);
         sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setGlobalSessionTimeout(1800000);//session逐出时间
+        sessionManager.setSessionValidationInterval(1800000);//定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话
+        sessionManager.setSessionValidationSchedulerEnabled(true);
         return sessionManager;
     }
 
