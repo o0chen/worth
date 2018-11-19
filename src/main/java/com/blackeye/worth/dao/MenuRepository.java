@@ -11,5 +11,5 @@ public interface MenuRepository extends BaseRepository<SysMenuPermission,String>
     @Query(value = "select max(t.menuOrder) from SysMenuPermission t")
     Integer getMaxMenuOrder();
 
-   List<SysMenuPermission> findByParentId(@Param("parentId") String parentId);
+   List<SysMenuPermission> findByParentIdOrderByMenuOrderAsc(@Param("parentId") String parentId);
 }

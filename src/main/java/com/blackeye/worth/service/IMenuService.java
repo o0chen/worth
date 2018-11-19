@@ -13,6 +13,6 @@ public interface IMenuService extends BaseService<SysMenuPermission,String> {
 
     Integer getMaxMenuOrder();
 
-    List<SysMenuPermission> findByParentId(String parentId);
+    List<SysMenuPermission> findByParentIdOrderByMenuOrderAsc(String parentId);
 
 }
