@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * boot配置
+ *
  */
 @Configuration
 @EnableWebMvc
@@ -22,7 +23,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
                 .indentOutput(true)
-                .dateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                .dateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))//配置返回时时间格式
                 .modulesToInstall(new ParameterNamesModule()); //JDK8 新特性，可选择多个模块
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
     }

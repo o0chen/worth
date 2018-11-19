@@ -35,6 +35,8 @@ public interface BaseService<T,ID extends Serializable> {
 
 	T get(ID id);
 
+
+
 	void delete(ID id);
 	
 	void delete(T t);
@@ -58,6 +60,9 @@ public interface BaseService<T,ID extends Serializable> {
 	Page<T> findAll(Specification<T> specification, Pageable pageable);
 
 
+
+	T findOne(Class<T> clazz, ID id);
+
 	@Transactional
 	T updateOne(Class<T> clazz, ID id, T entity);
 
@@ -69,6 +74,8 @@ public interface BaseService<T,ID extends Serializable> {
 	T saveOrUpdate(ID id, T t);
 
 	Page findAll(Predicate predicate, Pageable pageable);
+
+
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Page<T> findAll(Class<T> clazz,Pageable pageable);

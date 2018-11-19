@@ -48,6 +48,9 @@ public class QueryDslUtils {
                     if (value.startsWith("[") && value.endsWith("]")) {
                         int length = value.length();
                         value = value.substring(1, length - 1);
+                        if(StringUtils.isEmpty(value)){
+                            return null;
+                        }
                     }
                     String[] arr = value.split(",");
                     // 获得字段

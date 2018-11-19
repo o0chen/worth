@@ -10,6 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -316,7 +317,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     @Transactional
     @Override
     public T saveOrUpdate(ID id, T t) {
-        if (id != null) {
+        if (!StringUtils.isEmpty(id)) {
             T db = get(id);
             if (db != null) {
                 return updateOne(id, t);
@@ -337,7 +338,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
                 t=(T)ObjectMapUtils.mapToObject3((Map<String, Object>) t,clazz);
             }
 
-            if (id != null) {
+            if (!StringUtils.isEmpty(id)) {
                 T db = get(clazz,id);
                 if (db != null) {
                     return updateOne(clazz,id, t);
@@ -369,6 +370,11 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     public T get(Class<T> clazz, ID id) {
         return (T)this.getBaseRepositoryByClass(clazz).getOne(id);
     }
+
+    @Override
+    public T findOne(Class<T> clazz, ID id) {
+        return (T)this.getBaseRepositoryByClass(clazz).findOne((Example)id);
+    }
     @Override
     public Page<T> findAll(Class<T> clazz, Pageable pageable) {
         return this.getBaseRepositoryByClass(clazz).findAll(pageable);
@@ -391,36 +397,38 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
     @Override
     public T getOne(Class<T> clazz, String id) {
-        return null;
+        return (T)this.getBaseRepositoryByClass(clazz).getOne(id);
     }
 
     @Override
     public boolean existsById(Class<T> clazz, String id) {
-        return false;
+        return this.getBaseRepositoryByClass(clazz).existsById(id);
     }
 
     @Override
     public long count(Class<T> clazz) {
-        return 0;
+        return this.getBaseRepositoryByClass(clazz).count();
     }
 
     @Override
     public List<T> findAll(Class<T> clazz) {
-        return null;
+        return this.getBaseRepositoryByClass(clazz).findAll();
     }
 
     @Override
     public List<T> findAll(Class<T> clazz, Sort sort) {
-        return null;
+        return this.getBaseRepositoryByClass(clazz).findAll(sort);
     }
 
     @Override
     public List<T> findAll(Class<T> clazz, Specification<Object> specification) {
-        return null;
+        return this.getBaseRepositoryByClass(clazz).findAll(specification);
     }
 
     @Override
     public T save(Class<T> clazz, Object o) {
+        //TODO
         return null;
+//        return this.getBaseRepositoryByClass(clazz).save(o);
     }
 }

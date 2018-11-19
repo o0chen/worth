@@ -1,9 +1,11 @@
 package com.blackeye.worth.enums;
 
+import java.io.Serializable;
+
 /**
  * 菜单类型枚举
  */
-public enum UserStatusEnum {
+public enum UserStatusEnum implements Serializable {
     ACTIVE("激活", 1),
     DISABLE("禁用", 2),
     ;
@@ -40,6 +42,8 @@ public enum UserStatusEnum {
         }
         return null;
     }
+
+
 
 
 }

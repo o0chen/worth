@@ -1,5 +1,6 @@
 package com.blackeye.worth.utils;
 
+import com.blackeye.worth.config.SysDateFormat;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -297,10 +297,11 @@ public class ObjectMapUtils {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-//        mapper.getDeserializationConfig().with(formatter1).with(formatter2);
-		mapper.setDateFormat(formatter1).setDateFormat(formatter2);
+//		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+//      mapper.getDeserializationConfig().with(formatter1).with(formatter2);
+//		mapper.setDateFormat(formatter1);//这种方式只能设置一个全局的
+		mapper.setDateFormat(new SysDateFormat());//这种方式只能设置一个全局的
 
 	}
 
