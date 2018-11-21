@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +34,7 @@ public class LoginController {
     //post登录
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public Result loginFail(HttpServletRequest request){
+    public Result login(HttpServletRequest request){
        /* //添加用户认证信息
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(

@@ -1,6 +1,8 @@
 package com.blackeye.worth.controller;
 
 import com.blackeye.worth.model.SysMenuPermission;
+import com.blackeye.worth.model.SysRole;
+import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IMenuService;
 import com.blackeye.worth.service.IUserService;
 import com.blackeye.worth.tree.MenuTree;
@@ -37,9 +39,10 @@ public class IndexController extends BaseController {
     @ResponseBody
     public Result userMenus() {
         // 获取当前用户所拥有的菜单
-
         //Set<SysMenuPermission> menuSet = new LinkedHashSet<SysMenuPermission>(menuService.findByRoleIdAndType("1", MenuTypeEnum.MENU));
-        Set<SysMenuPermission> menuSet = new LinkedHashSet(userService.findUserByName("admin").getSysRole().getSysMenuPermissions());
+        SysUser sysUser = this.getLoginUser();
+        SysRole sysRole=(SysRole)this.get("SysRole",sysUser.getSysRole().getId());
+        Set<SysMenuPermission> menuSet = new LinkedHashSet(sysRole.getSysMenuPermissions());
         List<MenuTree> menuTrees = TreeUtils.buildMenuTree(new ArrayList<SysMenuPermission>(menuSet));
         return new Result.Builder().data(menuTrees).build();
     }
