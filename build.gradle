@@ -55,6 +55,7 @@ dependencies {
 
     compile('com.querydsl:querydsl-jpa')//:4.2.1
     compile('com.querydsl:querydsl-apt')
+    compile('org.springframework.boot:spring-boot-starter-cache')
 
 // 不同的两套
 // https://mvnrepository.com/artifact/com.mysema.maven/maven-apt-plugin
@@ -74,6 +75,9 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
+	compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.8.3'
+	
+   
 
 
 

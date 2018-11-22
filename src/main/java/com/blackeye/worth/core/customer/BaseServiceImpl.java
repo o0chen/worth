@@ -384,6 +384,10 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     public Page findAll(Class<T> clazz, com.querydsl.core.types.Predicate predicate, Pageable pageable) {
         return this.getBaseRepositoryByClass(clazz).findAll(predicate,pageable);
     }
+    @Override
+    public List<T> findAll(Class<T> clazz,com.querydsl.core.types.Predicate predicate) {
+        return this.getBaseRepositoryByClass(clazz).findAll(predicate);
+    }
 
     @Override
     public T saveAndFlush(Class<T> clazz, Object data) {

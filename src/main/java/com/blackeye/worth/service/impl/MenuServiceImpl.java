@@ -45,4 +45,6 @@ public class MenuServiceImpl extends BaseServiceImpl<SysMenuPermission, String> 
     public List<SysMenuPermission> findByParentIdOrderByMenuOrderAsc(String parentId) {
         return menuRepository.findByParentIdOrderByMenuOrderAsc(parentId);
     }
+
+
 }

@@ -102,6 +102,8 @@ public interface BaseService<T,ID extends Serializable> {
 
 	Page<T> searchAllByPage(Class<T> clazz, Map<String, Object> params, Pageable pageable);
 
+	List<T> findAll(Class<T> clazz, Predicate predicate);
+
 	T saveAndFlush(Class<T> clazz, Object data);
 
 	T getOne(Class<T> clazz, String id);

@@ -3,7 +3,9 @@ package com.blackeye.worth.model;
 
 import com.blackeye.worth.core.annotations.KeyWordSearch;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

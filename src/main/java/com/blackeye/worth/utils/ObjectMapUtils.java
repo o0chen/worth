@@ -29,12 +29,12 @@ public class ObjectMapUtils {
 	 * @param thisObj 对象
 	 * @return
 	 */
-	public static Map objectToMap(Object thisObj,Integer keyFomater)
-	{
-		Map map = new HashMap();
-		Class c;
-		try
-		{
+			public static Map objectToMap(Object thisObj,Integer keyFomater)
+			{
+				Map map = new HashMap();
+				Class c;
+				try
+				{
 			c = Class.forName(thisObj.getClass().getName());
 			//获取所有的方法
 			Method[] m = c.getMethods();
