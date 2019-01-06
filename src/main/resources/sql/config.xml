@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlset>
+   <!-- <include src="com/angroid/service/tag/config.xml"></include>-->
+    <sql id="test">
+        select * from sys_user
+        where 1=1
+        and name={name}
+        and mobile={mobile}
+    </sql>
+
+</sqlset>
+
