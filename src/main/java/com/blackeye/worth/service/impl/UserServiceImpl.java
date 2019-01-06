@@ -2,17 +2,8 @@ package com.blackeye.worth.service.impl;
 
 import com.blackeye.worth.core.customer.BaseServiceImpl;
 import com.blackeye.worth.dao.UserRepository;
-import com.blackeye.worth.model.QSysUser;
 import com.blackeye.worth.model.SysUser;
 import com.blackeye.worth.service.IUserService;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.ComparableExpressionBase;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,7 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //import javax.persistence.criteria.Predicate;
 
@@ -40,8 +33,18 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
 //        return this.saveOrUpdate(sysUser.getId(),sysUser);
 //    }
 
+
     public  void test(String name){
-//        userRepository.exi
+
+        Map m1=new HashMap();
+        m1.put("name",name);
+        m1.put("mobile",null);
+        this.pageObjectByNql(1,10,"test",m1,Map.class);
+//        System.exit(1);
+       /* Map m=new HashMap();
+        m.put("customerId",0);
+        userRepository.findByName("admin");
+        userRepository.test(m);
 
         //方式1
         //http://www.querydsl.com/static/querydsl/latest/reference/html/index.html
@@ -107,7 +110,7 @@ public class UserServiceImpl extends BaseServiceImpl<SysUser,String> implements 
         System.out.println(predicate.getType());
         System.out.println(predicate.getType().getName());
 
-
+*/
 
 
     }

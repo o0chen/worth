@@ -3,9 +3,7 @@ package com.blackeye.worth.model;
 
 import com.blackeye.worth.core.annotations.KeyWordSearch;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -19,7 +17,7 @@ import java.util.Objects;
  */
 @MappedSuperclass
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
-public abstract class BaseDojo {
+public class BaseDojo {
 
     /**
      * 主键
@@ -62,7 +60,7 @@ public abstract class BaseDojo {
      * 0 未删除
      * 1 删除
      */
-    @Column(columnDefinition ="0")
+    @Column(nullable=false,columnDefinition="INT default 0")
     private Integer delFlag=0;
 
 //    public BaseDojo() {

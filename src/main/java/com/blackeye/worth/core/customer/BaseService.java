@@ -19,7 +19,14 @@ public interface BaseService<T,ID extends Serializable> {
 	List<Object[]> queryBySql(String sql);
 	//基于原生态的sql进行查询,返回map,性能不如返回数组
 	List<Map> queryMapBySql(String sql);
-	//基于Hibernate的HQL进行查询
+
+	List<Map> queryByNql(String nql, Map params);
+
+    List<T> queryObjectByNql(String nql, Map params, Class clazz);
+
+    MyPage pageObjectByNql(Integer index, Integer size, String nql, Map params, Class<T> clazz);
+
+    //基于Hibernate的HQL进行查询
 	List<Object[]> queryByHql(String hql);
 	//基于Specification的方式进行查询，使用的是CriteriaQuery进行查询
 	List<Object[]> queryBySpecification(CriteriaQuery<Object[]> query);

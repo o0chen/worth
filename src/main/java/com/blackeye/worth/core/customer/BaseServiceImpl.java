@@ -1,10 +1,9 @@
 package com.blackeye.worth.core.customer;
 
 import com.blackeye.worth.core.params.extend.SearchUtils;
+import com.blackeye.worth.model.BaseDojo;
 import com.blackeye.worth.utils.BeanCopyUtil;
 import com.blackeye.worth.utils.ObjectMapUtils;
-import org.hibernate.query.internal.NativeQueryImpl;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -25,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 注意： * Class<T> 本组件中含有该类型参数的方法均可以之间使用，不需要子类注入泛型T；反之需要通过子类实例中调用
  *
- *注意： * Class<T> 本组件中含有该类型参数的方法均可以之间使用，不需要子类注入泛型T；反之需要通过子类实例中调用
  * @param <T>
  * @param <ID>
  */
@@ -39,13 +37,14 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
 
     private static Map<String, BaseRepository> registryMap = new HashMap<String, BaseRepository>();
+
     @Override
-    public BaseRepositoryImpl getBaseRepositoryByClass(Class<T> clazz){
+    public BaseRepositoryImpl getBaseRepositoryByClass(Class clazz) {
         String clazzName = clazz.getName();
-        if(!registryMap.containsKey(clazzName)){
-            synchronized(registryMap){
-                if(!registryMap.containsKey(clazzName)){
-                    return new BaseRepositoryImpl(clazz,entityManager);
+        if (!registryMap.containsKey(clazzName)) {
+            synchronized (registryMap) {
+                if (!registryMap.containsKey(clazzName)) {
+                    return new BaseRepositoryImpl(clazz, entityManager);
                 }
             }
         }
@@ -61,13 +60,13 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
 
     @Override
-    public List<Object[]> queryBySql(String sql) {
-        List<Object[]> list = entityManager
-                .createNativeQuery(sql)//eg："select address,count(*) from t_student group by address"
-//	弃用			.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP)
-                .getResultList();
+    public List<Object[]> queryBySql(String sql) {//baseRepository 还未注入
+//        List<Object[]> list = entityManager
+//                .createNativeQuery(sql)//eg："select address,count(*) from t_student group by address"
+////	弃用			.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP)
+//                .getResultList();
 
-        return list;
+        return this.getBaseRepositoryByClass(BaseDojo.class).queryBySql(sql);
     }
 
     @Override
@@ -75,11 +74,34 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 //        List<Map> list = entityManager
 //                .createNativeQuery(sql, java.util.Map.class)//eg;"select address,count(*) from t_student group by address"
 //                .getResultList();
-        Query query = entityManager.createNativeQuery(sql);
-        query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List list = query.getResultList();
+//        Query query = entityManager.createNativeQuery(sql);
+//        query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+//        List list = query.getResultList();
+//
+//        return list;
+        return this.getBaseRepositoryByClass(BaseDojo.class).queryMapBySql(sql);
+    }
 
-        return list;
+    @Override
+    public List<Map> queryByNql(String nql, Map params) {
+//        Expression exp = SqlUtil.eval(nql, params);
+//        Query query = entityManager.createNativeQuery(exp.getText());
+//        query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+//        List list = query.getResultList();
+//        return list;
+        return this.getBaseRepositoryByClass(BaseDojo.class).findByNql(nql,params);
+    }
+
+
+    @Override
+    public List<T> queryObjectByNql(String nql, Map params, Class clazz) {
+        return this.getBaseRepositoryByClass(BaseDojo.class).queryObjectByNql(nql,params,clazz);
+    }
+
+
+    @Override
+    public MyPage pageObjectByNql(Integer index, Integer size,String nql, Map params, Class clazz) {
+        return this.getBaseRepositoryByClass(BaseDojo.class).page(nql,params,index,size,clazz);
     }
 
 
@@ -140,11 +162,11 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
                 //判断传过来的name是否为null,如果不为null就加到条件中
 //                if(sysUserParam.getName()!=null){
                 *//** cb.equal（）相当于判断后面两个参数是否一致
-                 *root相当于我们的实体类的一个路径，使用get可以获取到我们的字段，因为我的cityid为Long类型
-                 * 所以是as(Long.class)
-                 *如果为Int,就是as(Integer.class) 第二个参数为前台传过来的参数，这句话就相当于
-                 * 数据库字段的值name = 前台传过来的值sysUserParam.getName()
-                 *//*
+         *root相当于我们的实体类的一个路径，使用get可以获取到我们的字段，因为我的cityid为Long类型
+         * 所以是as(Long.class)
+         *如果为Int,就是as(Integer.class) 第二个参数为前台传过来的参数，这句话就相当于
+         * 数据库字段的值name = 前台传过来的值sysUserParam.getName()
+         *//*
 //                    predicates.add(cb.equal(root.<String>get("name").,dojo));
                 //  predicates.add(cb.like(root.get("name"),"%"+sysUserParam.getName()+"%"));//like
 //                }
@@ -179,11 +201,11 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
      */
     @Override
     public Page<T> listByPage(com.querydsl.core.types.Predicate predicate, PageRequest pageRequest) {
-       if(predicate==null){
-           return this.baseRepository.findAll(pageRequest);
-       }else {
-           return this.baseRepository.findAll(predicate, pageRequest);
-       }
+        if (predicate == null) {
+            return this.baseRepository.findAll(pageRequest);
+        } else {
+            return this.baseRepository.findAll(predicate, pageRequest);
+        }
     }
 
 
@@ -261,7 +283,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     ///*********************************************************
 
     @Override
-    public List<T> searchAll(Class<T> clazz,Map<String, Object> params) {
+    public List<T> searchAll(Class<T> clazz, Map<String, Object> params) {
         Specification<T> spec = new Specification<T>() {
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -273,8 +295,9 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         List<T> list = this.getBaseRepositoryByClass(clazz).findAll(spec);
         return list;
     }
+
     @Override
-    public Page<T> searchAllByPage(Class<T> clazz,Map<String, Object> params, Pageable pageable) {
+    public Page<T> searchAllByPage(Class<T> clazz, Map<String, Object> params, Pageable pageable) {
         Specification<T> spec = new Specification<T>() {
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -283,7 +306,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
                 return null;
             }
         };
-        Page<T> list = this.getBaseRepositoryByClass(clazz).findAll(spec,pageable);
+        Page<T> list = this.getBaseRepositoryByClass(clazz).findAll(spec, pageable);
         return list;
     }
 
@@ -291,15 +314,15 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     @Transactional
     public T updateOne(ID id, T entity) {
         T tdb = baseRepository.getOne(id);
-        BeanCopyUtil.beanCopyWithIngore(entity, tdb,"id");
+        BeanCopyUtil.beanCopyWithIngore(entity, tdb, "id");
         return tdb;
     }
 
     @Transactional
     @Override
-    public T updateOne(Class<T> clazz,ID id, T entity) {
-        T tdb = (T)this.getBaseRepositoryByClass(clazz).getOne(id);
-        BeanCopyUtil.beanCopyWithIngore(entity, tdb,"id");
+    public T updateOne(Class<T> clazz, ID id, T entity) {
+        T tdb = (T) this.getBaseRepositoryByClass(clazz).getOne(id);
+        BeanCopyUtil.beanCopyWithIngore(entity, tdb, "id");
         return tdb;
     }
 
@@ -328,23 +351,22 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
     @Transactional
     @Override
-    public T saveOrUpdate(Class<T> clazz, ID id, T t)  {
+    public T saveOrUpdate(Class<T> clazz, ID id, T t) {
         try {
-            if(t.getClass().equals(LinkedHashMap.class))
-            {
-                 if(id==null){
-                    id=(ID)((Map<String, Object>) t).get("id");
+            if (t.getClass().equals(LinkedHashMap.class)) {
+                if (id == null) {
+                    id = (ID) ((Map<String, Object>) t).get("id");
                 }
-                t=(T)ObjectMapUtils.mapToObject3((Map<String, Object>) t,clazz);
+                t = (T) ObjectMapUtils.mapToObject3((Map<String, Object>) t, clazz);
             }
 
             if (!StringUtils.isEmpty(id)) {
-                T db = get(clazz,id);
+                T db = get(clazz, id);
                 if (db != null) {
-                    return updateOne(clazz,id, t);
+                    return updateOne(clazz, id, t);
                 }
             }
-            return saveOne(clazz,t);
+            return saveOne(clazz, t);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -361,20 +383,23 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     public void delete(Class<T> clazz, T t) {
         this.getBaseRepositoryByClass(clazz).delete(t);
     }
+
     @Transactional
     @Override
     public T saveOne(Class<T> clazz, T entity) {
-        return (T)this.getBaseRepositoryByClass(clazz).save(entity);
+        return (T) this.getBaseRepositoryByClass(clazz).save(entity);
     }
+
     @Override
     public T get(Class<T> clazz, ID id) {
-        return (T)this.getBaseRepositoryByClass(clazz).getOne(id);
+        return (T) this.getBaseRepositoryByClass(clazz).getOne(id);
     }
 
     @Override
     public T findOne(Class<T> clazz, ID id) {
-        return (T)this.getBaseRepositoryByClass(clazz).findOne((Example)id);
+        return (T) this.getBaseRepositoryByClass(clazz).findOne((Example) id);
     }
+
     @Override
     public Page<T> findAll(Class<T> clazz, Pageable pageable) {
         return this.getBaseRepositoryByClass(clazz).findAll(pageable);
@@ -382,26 +407,23 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
     @Override
     public Page findAll(Class<T> clazz, com.querydsl.core.types.Predicate predicate, Pageable pageable) {
-        return this.getBaseRepositoryByClass(clazz).findAll(predicate,pageable);
+        return this.getBaseRepositoryByClass(clazz).findAll(predicate, pageable);
     }
+
     @Override
-    public List<T> findAll(Class<T> clazz,com.querydsl.core.types.Predicate predicate) {
+    public List<T> findAll(Class<T> clazz, com.querydsl.core.types.Predicate predicate) {
         return this.getBaseRepositoryByClass(clazz).findAll(predicate);
     }
 
     @Override
     public T saveAndFlush(Class<T> clazz, Object data) {
-        return (T)this.getBaseRepositoryByClass(clazz).saveAndFlush(data);
+        return (T) this.getBaseRepositoryByClass(clazz).saveAndFlush(data);
     }
-
-
-
-
 
 
     @Override
     public T getOne(Class<T> clazz, String id) {
-        return (T)this.getBaseRepositoryByClass(clazz).getOne(id);
+        return (T) this.getBaseRepositoryByClass(clazz).getOne(id);
     }
 
     @Override
