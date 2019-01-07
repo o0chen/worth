@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+
     }
 }
 
@@ -116,7 +117,7 @@ configurations {
 
 task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
     source = sourceSets.main.java
-    classpath = configurations.compile + configurations.querydslapt
+    classpath = configurations.runtime+configurations.compile + configurations.querydslapt
     options.compilerArgs = [
             "-proc:only",
             "-processor",
@@ -146,7 +147,7 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
-//        sourceDirs += file('src/main/generated')
+        //sourceDirs += file('src/main/generated')
         generatedSourceDirs += file('src/main/generated')
     }
 }
