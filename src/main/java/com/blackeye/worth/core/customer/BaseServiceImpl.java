@@ -32,11 +32,16 @@ import java.util.Map;
 public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {//用以实现jpa中得各种功能和添加公用功能
     /*@Autowired 还是放controller比较合适
     Validator globalValidator;*/
-//    @Autowired
     protected BaseRepository<T, ID> baseRepository;
 
 
     private static Map<String, BaseRepository> registryMap = new HashMap<String, BaseRepository>();
+
+
+    public BaseServiceImpl() {
+        super();
+
+    }
 
     @Override
     public BaseRepositoryImpl getBaseRepositoryByClass(Class clazz) {
@@ -44,7 +49,9 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         if (!registryMap.containsKey(clazzName)) {
             synchronized (registryMap) {
                 if (!registryMap.containsKey(clazzName)) {
-                    return new BaseRepositoryImpl(clazz, entityManager);
+                    // return new BaseRepositoryImpl(clazz, entityManager);
+                    // 可否优先获取Spring上下文中去取，麻烦，算了
+                    registryMap.put(clazzName, new BaseRepositoryImpl(clazz, entityManager));
                 }
             }
         }
@@ -126,12 +133,13 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
 
 
-    public void myDbOperation(T t) {
 
-        baseRepository.myDbOperation(t);
-    }
 
     public void sayHello(String name) {
+        if(baseRepository==null)
+        {
+            this.baseRepository= this.getBaseRepositoryByClass(BaseDojo.class);
+        }
         baseRepository.sayHello(name);
     }
 
@@ -143,7 +151,11 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
      * @return
      */
     @Override
-    public List<T> selectByAutoBuild(Map<String, Object> params) {
+    public List<T> selectByAutoBuild(Map<String, Object> params, Class<T> t) {
+        if(baseRepository==null)
+        {
+            this.baseRepository= this.getBaseRepositoryByClass(t.getClass());
+        }
         /**root ：我们要查询的类型
          * query：添加查询条件
          * cb: 构建条件
@@ -192,6 +204,8 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
 
 
+
+    /******************************以下中间的方法需要子类自己实现！！！！super()******************************************
     /**
      * 分页查询
      *
@@ -280,7 +294,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         return baseRepository.findAll(predicate, pageable);
     }
 
-    ///*********************************************************
+    ///**********************以上中间的方法需要子类自己实现！！！！super()************************************
 
     @Override
     public List<T> searchAll(Class<T> clazz, Map<String, Object> params) {

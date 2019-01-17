@@ -1,8 +1,10 @@
 package com.blackeye.worth;
 
 import com.blackeye.worth.core.customer.BaseRepositoryFactoryBean;
+import com.blackeye.worth.utils.SpringContextUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -15,7 +17,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class WorthApplication{
 
     public static void main(String[] args) {
-        SpringApplication.run(WorthApplication.class, args);
+        ApplicationContext app=SpringApplication.run(WorthApplication.class, args);
+        SpringContextUtil.setApplicationContext(app);
     }
 
 //    @Override

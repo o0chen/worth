@@ -25,7 +25,8 @@ import java.util.Map;
 
 //必须使用该注解标明，此接口不是一个Repository Bean
 @NoRepositoryBean
-public  class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpaRepository<T, ID>
+//@Repository
+public class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpaRepository<T, ID>
         implements BaseRepository<T, ID>, QuerydslBinderCustomizer {
     @Autowired
     @PersistenceContext
@@ -68,12 +69,6 @@ public  class BaseRepositoryImpl<T, ID extends Serializable> extends QuerydslJpa
     public void sayHello(String name) {
         System.out.println("entityManage:" + entityManager);
         System.out.println("hello, " + name);
-    }
-
-    @Override
-    public Object myDbOperation(T entity) {
-        System.out.println(entity.getClass());
-        return null;
     }
 
     //

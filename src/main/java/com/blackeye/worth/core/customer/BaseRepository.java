@@ -20,9 +20,6 @@ public interface BaseRepository<T, ID extends Serializable> extends JpaRepositor
 //	public T add(T entity);
 //	public T update(T entity);
 
-	public Object myDbOperation(T entity);
-
-
 	//基于原生态的sql进行查询h
 	List<Object[]> queryBySql(String sql);
 	//基于原生态的sql进行查询,返回map,性能不如返回数组

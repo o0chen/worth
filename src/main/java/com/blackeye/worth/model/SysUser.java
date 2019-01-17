@@ -73,4 +73,16 @@ public class SysUser extends BaseDojo {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", status=" + status +
+                ", password='" + password + '\'' +
+                ", sysRole=" + sysRole +
+                "} " + super.toString();
+    }
 }

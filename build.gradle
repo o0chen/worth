@@ -147,8 +147,8 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
-        //sourceDirs += file('src/main/generated')
-        generatedSourceDirs += file('src/main/generated')
+        sourceDirs += file(sourceSets.generated.java.srcDirs.iterator().next())
+//        generatedSourceDirs += file('src/main/generated')
     }
 }
 
@@ -162,9 +162,3 @@ eclipse {
     }
 }
 
-//compileJava {
-//    classpath += sourceSets.generated.runtimeClasspath
-//}
-//dependencies {
-//    compile project('worth:worth_generated')
-//}

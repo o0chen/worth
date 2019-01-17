@@ -31,8 +31,7 @@ public interface BaseService<T,ID extends Serializable> {
 	//基于Specification的方式进行查询，使用的是CriteriaQuery进行查询
 	List<Object[]> queryBySpecification(CriteriaQuery<Object[]> query);
 
-
-	List<T> selectByAutoBuild(Map<String, Object> params);
+	List<T> selectByAutoBuild(Map<String, Object> params, Class<T> t);
 
 	Page<T> listByPage(com.querydsl.core.types.Predicate predicate, PageRequest pageRequest);
 
