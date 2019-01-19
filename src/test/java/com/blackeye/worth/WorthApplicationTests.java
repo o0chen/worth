@@ -16,7 +16,7 @@ public class WorthApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(userService.findUserByName("admin").toString());
+//        System.out.println(userService.findUserByName("admin").toString());
 //        System.err.println(userService.get("1").toString());//userService 未实现的方法不可直接使用
     }
 

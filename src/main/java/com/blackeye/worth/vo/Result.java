@@ -41,7 +41,7 @@ public class Result<T> implements Serializable {
     /**
      * 消息
      */
-    private String message = "success";
+    private String message = "操作成功";
 
     /**
      * 要返回的数据

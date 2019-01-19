@@ -62,10 +62,15 @@ public class IndexController extends BaseController {
     @RequestMapping(value="/savemenu",method=RequestMethod.POST)
     @ResponseBody
     public Result savemenu(@RequestBody SysMenuPermission sysMenuPermission){
-        if(StringX.isEmpty(sysMenuPermission.getId())){
-            sysMenuPermission.setMenuOrder(menuService.getMaxMenuOrder()+1);//新增
+        if (StringX.isEmpty(sysMenuPermission.getId())) {
+            sysMenuPermission.setMenuOrder((menuService.getMaxMenuOrder() == null ? 0 : menuService.getMaxMenuOrder()) + 1);//新增
         }
-        return new Result.Builder().data(menuService.saveOrUpdate(sysMenuPermission.getId(),sysMenuPermission)).build();
+//        if (StringX.isEmpty(sysMenuPermission.getUrl())) {
+//            sysMenuPermission.setUrl("/");
+//        }
+
+        SysMenuPermission result = menuService.saveOrUpdate(sysMenuPermission.getId(), sysMenuPermission);
+        return new Result.Builder().data(result).build();
     }
 
     /**
